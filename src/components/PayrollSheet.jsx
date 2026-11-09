@@ -107,9 +107,12 @@ export default function PayrollSheet({ rows, month, companyId, search = '' }) {
     {hasErrors && <p role="alert">Có nhân viên thiếu mức lương hoặc dữ liệu công hợp lệ. Bổ sung ngày hiệu lực trong hồ sơ nhân sự rồi tải lại trước khi chốt.</p>}
     {!snapshot && summaryState.dirty && <p role="alert">Lưu hoặc bỏ các ô phân bổ lương đang nhập trước khi chốt tháng.</p>}
     {error && <p role="alert">{error}</p>}
-    <PayrollTable rows={payrollRows} employeesById={new Map(Object.entries(snapshot?.employees || loaded.employees))}
-      penalties={snapshot?.penalties || loaded.penalties} leaveSettings={snapshot?.leave || loaded.leave} month={month} />
     <PayrollSummary key={`${companyId}:${month}`} rows={payrollRows} month={month} companyId={companyId}
       search={search} frozen={snapshot} readOnly={Boolean(snapshot) || saving} onStateChange={setSummaryState} />
+    <details className="payroll-reference">
+      <summary>Đối chiếu công và lịch sử lương (chỉ xem)</summary>
+      <PayrollTable rows={payrollRows} employeesById={new Map(Object.entries(snapshot?.employees || loaded.employees))}
+        penalties={snapshot?.penalties || loaded.penalties} leaveSettings={snapshot?.leave || loaded.leave} month={month} />
+    </details>
   </>
 }

@@ -93,6 +93,20 @@ test('lỗi tải lịch sử không cho xem hoặc chốt bảng tính thiếu 
   assert.equal(app.button('Chốt bảng lương'), undefined)
 })
 
+test('bảng nhập hiện trước, bảng chỉ xem nằm trong phần đối chiếu thu gọn', async () => {
+  const app = harness()
+  const tree = await app.load()
+  const rendered = nodes(tree)
+  const summaryIndex = rendered.findIndex(node => node.type?.name === 'PayrollSummary')
+  const tableIndex = rendered.findIndex(node => node.type?.name === 'PayrollTable')
+  const reference = rendered.find(node => node.type === 'details')
+  assert.ok(summaryIndex >= 0 && summaryIndex < tableIndex)
+  assert.equal(Boolean(reference.props.open), false)
+  assert.ok(nodes(reference).some(node => node.type?.name === 'PayrollTable'))
+  assert.match(text(reference), /chỉ xem/)
+  assert.equal(rendered[summaryIndex].props.readOnly, false)
+})
+
 test('phải lưu hoặc bỏ nháp phân bổ trước khi chốt cả hai bảng', async () => {
   const app = harness()
   await app.load()

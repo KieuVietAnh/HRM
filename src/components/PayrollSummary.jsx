@@ -5,7 +5,7 @@ import { fbGetEmployeesDirectory } from '../services/firebase'
 import { supabase } from '../services/supabase'
 import { loadPayrollSummary, savePayrollSummary } from '../services/payrollSummary'
 import { formatMoney } from '../utils/helpers'
-import { PAYROLL_COMPONENTS, makePayrollRecord, payrollAmounts, payrollSummaryTotals, pastePayrollDeductions } from '../utils/payrollSummary'
+import { PAYROLL_COMPONENTS, PAYROLL_EDIT_COLUMNS, makePayrollRecord, payrollAmounts, payrollSummaryTotals, pastePayrollCells } from '../utils/payrollSummary'
 import './PayrollSummary.css'
 
 const money = value => value === null ? 'Chưa nhập đủ' : formatMoney(value)
@@ -126,12 +126,13 @@ export default function PayrollSummary({ rows, month, companyId, search = '', fr
 
   function exportExcel() {
     if (visible.some(row => row.error) || totalError) { setError('Sửa các ô không hợp lệ trước khi xuất Excel.'); return }
-    const headers = ['Mã NV', 'Họ tên', 'Bộ phận', 'Công chính', 'Tăng ca (giờ)', ...PAYROLL_COMPONENTS.map(([, label]) => label), 'Tổng lương nhận', 'BHXH', 'Đã ứng', 'Thực nhận', 'Ghi chú']
+    const headers = ['Mã NV', 'Họ tên', 'Bộ phận', 'Công chính', 'Tăng ca (giờ)', ...PAYROLL_EDIT_COLUMNS.map(([, label]) => label), 'Tổng lương nhận', 'Thực nhận']
     const data = visible.map(row => [row.code, row.name, row.department, row.mainWorkdays, row.overtimeHours,
-      ...PAYROLL_COMPONENTS.map(([key]) => row.amounts[key]), row.amounts.gross, row.amounts.insurance, row.amounts.advance, row.amounts.net, row.note])
-    const sheet = XLSX.utils.aoa_to_sheet([headers, ...data, ['TỔNG CỘNG', '', '', '', '', '', '', '', '', '', totals.incomplete ? null : totals.gross, totals.insurance, totals.advance, totals.incomplete ? null : totals.net, totals.incomplete ? `${totals.incomplete} người chưa nhập đủ lương; chưa có tổng lương và thực nhận đầy đủ.` : '']])
-    sheet['!cols'] = headers.map((_, index) => ({ wch: index === 1 || index === 14 ? 30 : 20 }))
-    for (let r = 1; r <= data.length + 1; r++) for (let c = 5; c <= 13; c++) {
+      ...PAYROLL_EDIT_COLUMNS.map(([key]) => key === 'note' ? row.note : row.amounts[key]), row.amounts.gross, row.amounts.net])
+    const componentTotals = PAYROLL_COMPONENTS.map(([key]) => totals.components[key])
+    const sheet = XLSX.utils.aoa_to_sheet([headers, ...data, ['TỔNG CỘNG', '', '', '', '', ...componentTotals, totals.insurance, totals.advance, totals.incomplete ? `${totals.incomplete} người chưa nhập đủ lương; chưa có tổng lương và thực nhận đầy đủ.` : '', totals.incomplete ? null : totals.gross, totals.incomplete ? null : totals.net]])
+    sheet['!cols'] = headers.map((_, index) => ({ wch: index === 1 || index === 12 ? 30 : 20 }))
+    for (let r = 1; r <= data.length + 1; r++) for (let c = 5; c <= 14; c++) {
       const cell = sheet[XLSX.utils.encode_cell({ r, c })]
       if (cell?.t === 'n') cell.z = '#,##0'
     }
@@ -143,15 +144,21 @@ export default function PayrollSummary({ rows, month, companyId, search = '', fr
   function moveCell(event, rowIndex, columnIndex) {
     let targetRow = rowIndex, targetColumn = columnIndex
     if (event.key === 'Escape') {
-      edit(visible[rowIndex].employeeId, { [columnIndex ? 'advance' : 'insurance']: event.currentTarget.dataset.original })
+      event.preventDefault()
+      edit(visible[rowIndex].employeeId, { [PAYROLL_EDIT_COLUMNS[columnIndex][0]]: event.currentTarget.dataset.original })
       event.currentTarget.blur(); return
     }
     if (event.key === 'Enter') targetRow += event.shiftKey ? -1 : 1
     else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') targetRow += event.key === 'ArrowDown' ? 1 : -1
     else if (event.key === 'Tab') {
       targetColumn += event.shiftKey ? -1 : 1
-      if (targetColumn > 1) { targetRow++; targetColumn = 0 }
-      if (targetColumn < 0) { targetRow--; targetColumn = 1 }
+      if (targetColumn >= PAYROLL_EDIT_COLUMNS.length) { targetRow++; targetColumn = 0 }
+      if (targetColumn < 0) { targetRow--; targetColumn = PAYROLL_EDIT_COLUMNS.length - 1 }
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      const { selectionStart, selectionEnd, value } = event.currentTarget
+      const selectedAll = selectionStart === 0 && selectionEnd === value.length
+      if (!selectedAll && (selectionStart !== selectionEnd || (event.key === 'ArrowLeft' ? selectionStart !== 0 : selectionEnd !== value.length))) return
+      targetColumn += event.key === 'ArrowLeft' ? -1 : 1
     } else return
     const input = grid.current?.querySelector(`[data-row="${targetRow}"][data-column="${targetColumn}"]`)
     if (input) { event.preventDefault(); input.focus(); input.select() }
@@ -175,29 +182,28 @@ export default function PayrollSummary({ rows, month, companyId, search = '', fr
         }
       }}>Bỏ nháp</button>}
     </div>
-    <p className="payroll-summary-help">{readOnly ? 'Bảng lương đã khóa. Có thể xem phân bổ và xuất Excel.' : 'Bấm tên để nhập và xem phân bổ lương. Gõ trực tiếp BHXH, Đã ứng; dùng Tab / Enter để chuyển ô hoặc dán hai cột từ Excel.'}</p>
+    <p className="payroll-summary-help">{readOnly ? 'Bảng lương đã khóa. Có thể xem phân bổ và xuất Excel.' : 'Gõ trực tiếp các khoản lương, BHXH, đã ứng và ghi chú. Dán nhiều dòng/cột từ Excel vào ô bắt đầu; Tab sang ô kế, Enter xuống dòng, Esc hủy sửa ô. Bấm tên để xem phân bổ từng người.'}</p>
     <p className="payroll-summary-formula">Thực nhận = Tổng lương nhận − BHXH − Đã ứng. Công chính và tăng ca hiển thị riêng theo đơn vị công / giờ.</p>
     {(error || notice || totalError) && <p role={error || totalError ? 'alert' : 'status'} className={error || totalError ? 'payroll-summary-error' : ''}>{error || totalError || notice}</p>}
     <div className="payroll-summary-scroll" ref={grid}>
       <table className="payroll-summary-table">
         <caption className="sr-only">Bảng tổng hợp lương tháng {month}. Ô màu sáng cho phép nhập.</caption>
-        <thead><tr><th scope="col">STT</th><th scope="col">Mã NV</th><th scope="col">Họ tên / Bộ phận</th><th scope="col">Công chính</th><th scope="col">Tăng ca (giờ)</th><th scope="col">Tổng lương nhận</th><th scope="col">BHXH</th><th scope="col">Đã ứng</th><th scope="col">Thực nhận</th></tr></thead>
+        <thead><tr><th scope="col">STT</th><th scope="col">Mã NV</th><th scope="col">Họ tên / Bộ phận</th><th scope="col">Công chính</th><th scope="col">Tăng ca (giờ)</th>{PAYROLL_EDIT_COLUMNS.map(([field, label]) => <th scope="col" key={field}>{label}</th>)}<th scope="col">Tổng lương nhận</th><th scope="col">Thực nhận</th></tr></thead>
         <tbody>{visible.map((row, index) => <tr key={row.employeeId} className={drafts[row.employeeId] ? 'is-dirty' : ''}>
           <td>{index + 1}</td><td>{row.code || '—'}</td><th scope="row"><button type="button" className="payroll-summary-person" onClick={() => setSelected(row.employeeId)}>{row.name || row.employeeId}</button><small>{row.department || 'Chưa có bộ phận'}{drafts[row.employeeId] ? ' · Chưa lưu' : ''}</small></th>
           <td>{quantity(row.mainWorkdays)}</td><td>{quantity(row.overtimeHours)}</td>
-          <td title={row.error}>{row.amounts ? money(row.amounts.gross) : 'Ô nhập không hợp lệ'}</td>
-          {['insurance', 'advance'].map((field, columnIndex) => <td className={`payroll-summary-edit ${Object.hasOwn(drafts[row.employeeId] || {}, field) ? 'is-changed' : ''}`} key={field}>
-            <input aria-label={`${field === 'insurance' ? 'BHXH' : 'Đã ứng'} — ${row.name}`} inputMode="numeric" value={row[field] ?? ''} disabled={readOnly || saving}
+          {PAYROLL_EDIT_COLUMNS.map(([field, label], columnIndex) => <td className={`payroll-summary-edit ${field === 'note' ? 'payroll-summary-note-cell' : ''} ${Object.hasOwn(drafts[row.employeeId] || {}, field) ? 'is-changed' : ''}`} key={field}>
+            <input aria-label={`${label} — ${row.name}`} title={field === 'note' ? row.note : row.error || label} inputMode={field === 'note' ? 'text' : 'numeric'} maxLength={field === 'note' ? 1000 : undefined} value={typeof row[field] === 'number' ? row[field].toLocaleString('vi-VN') : row[field] ?? ''} disabled={readOnly || saving}
               data-row={index} data-column={columnIndex} aria-invalid={Boolean(row.error)}
               onFocus={event => { event.currentTarget.dataset.original = event.currentTarget.value; event.target.select() }} onChange={event => edit(row.employeeId, { [field]: event.target.value })}
               onKeyDown={event => moveCell(event, index, columnIndex)}
               onPaste={event => {
-                if (readOnly) return
+                if (readOnly || saving) return
                 const text = event.clipboardData.getData('text')
                 if (!/[\t\r\n]/.test(text)) return
                 event.preventDefault()
                 try {
-                  const patches = pastePayrollDeductions(text, index, columnIndex, visible)
+                  const patches = pastePayrollCells(text, index, columnIndex, visible)
                   setDrafts(previous => {
                     const next = { ...previous }
                     Object.entries(patches).forEach(([id, patch]) => { next[id] = { ...next[id], ...patch } })
@@ -206,11 +212,12 @@ export default function PayrollSummary({ rows, month, companyId, search = '', fr
                 } catch (cause) { setError(cause.message) }
               }} />
           </td>)}
+          <td title={row.error}>{row.amounts ? money(row.amounts.gross) : 'Ô nhập không hợp lệ'}</td>
           <td className="payroll-summary-net">{row.amounts ? money(row.amounts.net) : '—'}</td>
         </tr>)}
-          {!visible.length && <tr><td colSpan={9}>Không có nhân viên phù hợp.</td></tr>}
+          {!visible.length && <tr><td colSpan={PAYROLL_EDIT_COLUMNS.length + 7}>Không có nhân viên phù hợp.</td></tr>}
         </tbody>
-        <tfoot><tr><th colSpan={5} scope="row">Tổng cộng theo bộ lọc{totals?.incomplete ? ` · ${totals.incomplete} người chưa đủ lương` : ''}</th><td>{totals ? money(totals.incomplete ? null : totals.gross) : '—'}</td><td>{totals ? formatMoney(totals.insurance) : '—'}</td><td>{totals ? formatMoney(totals.advance) : '—'}</td><td>{totals ? money(totals.incomplete ? null : totals.net) : '—'}</td></tr></tfoot>
+        <tfoot><tr><th colSpan={5} scope="row">Tổng cộng theo bộ lọc{totals?.incomplete ? ` · ${totals.incomplete} người chưa đủ lương` : ''}</th>{PAYROLL_EDIT_COLUMNS.map(([field]) => <td key={field}>{field === 'note' ? '' : totals ? formatMoney(totals.components[field] ?? totals[field]) : '—'}</td>)}<td>{totals ? money(totals.incomplete ? null : totals.gross) : '—'}</td><td>{totals ? money(totals.incomplete ? null : totals.net) : '—'}</td></tr></tfoot>
       </table>
     </div>
     {detail && <dialog ref={dialog} className="payroll-summary-dialog" aria-labelledby="payroll-detail-title" onCancel={event => { if (saving) event.preventDefault() }} onClose={() => setSelected(null)}>

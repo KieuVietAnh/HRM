@@ -3,6 +3,8 @@ export const PAYROLL_COMPONENTS = [
   ['allowance', 'Phụ cấp'], ['bonus', 'Thưởng / KPI'], ['otherIncome', 'Thu nhập khác']
 ]
 
+export const PAYROLL_EDIT_COLUMNS = [...PAYROLL_COMPONENTS, ['insurance', 'BHXH'], ['advance', 'Đã ứng'], ['note', 'Ghi chú']]
+
 export function parsePayrollMoney(value) {
   const text = String(value ?? '').trim().replace(/\s*(?:₫|đ|vnd)$/i, '').trim()
   if (!text) return null
@@ -52,18 +54,44 @@ export function makePayrollRecord(row, employee = {}) {
   }
 }
 
-export function pastePayrollDeductions(text, startRow, startColumn, rows) {
-  const fields = ['insurance', 'advance']
-  const lines = text.replace(/\r\n?/g, '\n').replace(/\n$/, '').split('\n').map(line => line.split('\t'))
-  if (startRow + lines.length > rows.length || lines.some(line => startColumn + line.length > fields.length)) {
-    throw new Error('Chỉ dán vào hai cột BHXH, Đã ứng và trong số dòng đang hiển thị.')
+export function pastePayrollCells(text, startRow, startColumn, rows) {
+  const input = text.replace(/\r\n?/g, '\n')
+  const lines = [[]]
+  let value = '', quoted = false, closedQuote = false
+  for (let i = 0; i < input.length; i++) {
+    const character = input[i]
+    if (quoted) {
+      if (character !== '"') value += character
+      else if (input[i + 1] === '"') { value += '"'; i++ }
+      else { quoted = false; closedQuote = true }
+    } else if (character === '\t' || character === '\n') {
+      lines.at(-1).push(value); value = ''; closedQuote = false
+      if (character === '\n') lines.push([])
+    } else if (closedQuote) throw new Error('Vùng dán có dấu ngoặc kép không hợp lệ.')
+    else if (character === '"' && !value) quoted = true
+    else value += character
+  }
+  if (quoted) throw new Error('Vùng dán thiếu dấu ngoặc kép kết thúc.')
+  lines.at(-1).push(value)
+  if (input.endsWith('\n') && lines.at(-1).length === 1 && !lines.at(-1)[0]) lines.pop()
+  if (startRow < 0 || startColumn < 0 || startRow >= rows.length || startColumn >= PAYROLL_EDIT_COLUMNS.length ||
+      startRow + lines.length > rows.length || lines.some(line => startColumn + line.length > PAYROLL_EDIT_COLUMNS.length)) {
+    throw new Error('Vùng dán vượt quá các cột nhập hoặc số dòng đang hiển thị. Bắt đầu từ ô lương, BHXH, đã ứng hoặc ghi chú.')
   }
   const patches = {}
   lines.forEach((line, offset) => {
     const patch = {}
     line.forEach((value, index) => {
-      try { patch[fields[startColumn + index]] = parsePayrollMoney(value) ?? 0 }
-      catch (error) { throw new Error(`Dòng ${startRow + offset + 1}: ${error.message}`) }
+      const [field, label] = PAYROLL_EDIT_COLUMNS[startColumn + index]
+      try {
+        if (field === 'note') {
+          if (value.length > 1000) throw new Error('Ghi chú tối đa 1.000 ký tự.')
+          patch[field] = value
+        } else {
+          const amount = parsePayrollMoney(value)
+          patch[field] = amount === null && !['mainPay', 'overtimePay'].includes(field) ? 0 : amount
+        }
+      } catch (error) { throw new Error(`Dòng ${startRow + offset + 1}, ${label}: ${error.message}`) }
     })
     patches[rows[startRow + offset].employeeId] = patch
   })
@@ -74,11 +102,12 @@ export function payrollSummaryTotals(rows) {
   return rows.reduce((total, row) => {
     const values = payrollAmounts(row)
     for (const key of ['insurance', 'advance']) total[key] += values[key]
+    for (const [key] of PAYROLL_COMPONENTS) total.components[key] += values[key] ?? 0
     if (values.gross === null) total.incomplete++
     else { total.gross += values.gross; total.net += values.net }
-    for (const key of ['gross', 'net', 'insurance', 'advance']) {
-      if (!Number.isSafeInteger(total[key])) throw new Error('Tổng tiền vượt giới hạn cho phép.')
+    for (const amount of [total.gross, total.net, total.insurance, total.advance, ...Object.values(total.components)]) {
+      if (!Number.isSafeInteger(amount)) throw new Error('Tổng tiền vượt giới hạn cho phép.')
     }
     return total
-  }, { gross: 0, net: 0, insurance: 0, advance: 0, incomplete: 0 })
+  }, { gross: 0, net: 0, insurance: 0, advance: 0, incomplete: 0, components: Object.fromEntries(PAYROLL_COMPONENTS.map(([key]) => [key, 0])) })
 }

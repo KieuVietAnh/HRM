@@ -1,4 +1,7 @@
 .payroll-summary { color: #172b4d; }
+.payroll-reference { margin-top: 20px; }
+.payroll-reference > summary { padding: 12px; color: #52657d; background: #f6f8fb; border: 1px solid #d6e0ec; border-radius: 6px; cursor: pointer; }
+.payroll-reference[open] > summary { margin-bottom: 10px; }
 .payroll-summary-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 16px 0 10px; }
 .payroll-summary-toolbar > div { margin-right: auto; }
 .payroll-summary h2 { margin: 0; font-size: 19px; }
@@ -10,14 +13,14 @@
 .payroll-summary-formula { padding: 9px 12px; background: #edf5ff; border-radius: 6px; font-size: 13px; }
 .payroll-summary .payroll-summary-error { color: #b42318; background: #fff1f0; padding: 10px; border-radius: 6px; }
 .payroll-summary-scroll { overflow: auto; max-height: 65vh; border: 1px solid #b7c7d9; border-radius: 6px; }
-.payroll-summary-table { width: 100%; min-width: 1180px; border-spacing: 0; border-collapse: separate; font-size: 13px; table-layout: fixed; margin: 0; }
+.payroll-summary-table { width: 100%; min-width: 2200px; border-spacing: 0; border-collapse: separate; font-size: 13px; table-layout: fixed; margin: 0; }
 .payroll-summary-table th, .payroll-summary-table td { border-right: 1px solid #d6e0ec; border-bottom: 1px solid #d6e0ec; padding: 9px 10px; white-space: nowrap; background: #f6f8fb; text-align: right; }
 .payroll-summary-table thead th { position: sticky; top: 0; z-index: 3; background: #e5edf7; color: #173958; height: 44px; }
 .payroll-summary-table tr > :nth-child(1) { width: 48px; text-align: center; }
 .payroll-summary-table tr > :nth-child(2) { width: 110px; text-align: left; }
 .payroll-summary-table tr > :nth-child(3) { width: 220px; text-align: left; }
 .payroll-summary-table tr > :nth-child(4), .payroll-summary-table tr > :nth-child(5) { width: 100px; }
-.payroll-summary-table tr > :nth-child(6), .payroll-summary-table tr > :nth-child(9) { width: 175px; font-weight: 700; }
+.payroll-summary-table tr > :nth-last-child(-n+2) { width: 175px; font-weight: 700; }
 .payroll-summary-table tbody tr > :nth-child(1), .payroll-summary-table thead tr > :nth-child(1) { position: sticky; left: 0; z-index: 2; }
 .payroll-summary-table tbody tr > :nth-child(2), .payroll-summary-table thead tr > :nth-child(2) { position: sticky; left: 48px; z-index: 2; }
 .payroll-summary-table tbody tr > :nth-child(3), .payroll-summary-table thead tr > :nth-child(3) { position: sticky; left: 158px; z-index: 2; border-right: 2px solid #b7c7d9; }
@@ -26,6 +29,8 @@
 .payroll-summary .payroll-summary-person { padding: 0; border: 0; min-height: 28px; background: transparent; text-align: left; font-weight: 700; color: #175cba; white-space: normal; }
 .payroll-summary-table .payroll-summary-edit { padding: 0; background: #fff; }
 .payroll-summary-edit input { width: 100%; min-width: 120px; min-height: 48px; padding: 10px; box-sizing: border-box; border: 0; background: transparent; color: #172b4d; font: inherit; text-align: right; }
+.payroll-summary-table .payroll-summary-note-cell { width: 220px; }
+.payroll-summary-note-cell input { text-align: left; }
 .payroll-summary-table .is-changed { background: #fff8d8; }
 .payroll-summary-table .is-dirty > :nth-child(3) { box-shadow: inset 3px 0 #d59716; }
 .payroll-summary-table .payroll-summary-net { color: #146b43; background: #eef8f1; }
