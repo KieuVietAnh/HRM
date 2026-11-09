@@ -34,6 +34,8 @@ const EMPLOYEE_EXCEL_HEADERS = [
     'NOTED',
     'CƠ CHẾ LƯƠNG',
     'TỔNG LƯƠNG',
+    'NGÀY HIỆU LỰC LƯƠNG',
+    'TỶ LỆ LƯƠNG THỬ VIỆC',
     'SĐT',
     'SỐ CCCD',
     'NGÀY CẤP',
@@ -379,6 +381,8 @@ function Employees() {
         emp.ghi_chu || emp.notes || '',
         emp.co_che_luong || '',
         emp.tong_luong || '',
+        dateCell(emp.ngay_hieu_luc_luong),
+        emp.ty_le_luong_thu_viec ?? 100,
         asIdentityText(emp.sđt ?? emp.sdt, 'phone'),
         asIdentityText(emp.cccd, 'cccd'),
         dateCell(emp.ngay_cap),
@@ -474,7 +478,8 @@ function Employees() {
                 const looksCsv = fileName.endsWith('.csv') || fileName.endsWith('.txt')
 
                 if (looksHtml || looksCsv) {
-                    return XLSX.read(new TextDecoder('utf-8').decode(bytes), { type: 'string', raw: false })
+                    // CSV phải giữ ngày dd/mm và số 0 đầu, không để XLSX tự đoán mm/dd.
+                    return XLSX.read(new TextDecoder('utf-8').decode(bytes), { type: 'string', raw: looksCsv })
                 }
 
                 try {
@@ -670,6 +675,8 @@ function Employees() {
                     ghi_chu: pick(rowObj, 'noted', 'note', 'ghi_chu', 'notes'),
                     co_che_luong: pick(rowObj, 'co_che_luong'),
                     tong_luong: pick(rowObj, 'tong_luong'),
+                    ngay_hieu_luc_luong: pick(rowObj, 'ngay_hieu_luc_luong'),
+                    ty_le_luong_thu_viec: pick(rowObj, 'ty_le_luong_thu_viec'),
                     avatarUrl: convertDriveLink(pick(rowObj, 'link_anh', 'avatar', 'anh', 'hinh_anh', 'image'))
                 }
 
@@ -698,6 +705,7 @@ function Employees() {
                 seenImportKeys.set(importKey, payload.ho_va_ten)
 
                 const rowErrors = []
+                if (!isValidDate(payload.ngay_hieu_luc_luong)) rowErrors.push('Ngày hiệu lực lương không hợp lệ')
 
                 if (!isValidDate(payload.ngay_sinh)) rowErrors.push(`Ngày sinh không hợp lệ: "${payload.ngay_sinh}" (cần dd/mm/yyyy)`)
                 if (!isValidDate(payload.ngay_vao_lam)) rowErrors.push(`Ngày vào làm không hợp lệ: "${payload.ngay_vao_lam}" (cần dd/mm/yyyy)`)
@@ -716,6 +724,8 @@ function Employees() {
                 }
 
                 const dbPayload = { ...mapAppToUser(payload) }
+                // File không có lương (hoặc ô trống) không được xóa mức lương đã lưu.
+                if (payload.tong_luong === '') delete dbPayload.total_salary
                 const existing = codeKey ? existingByCode.get(codeKey) : null
                 // Không ghi đè trạng thái hiện có bằng giá trị rỗng khi file không có cột trạng thái/tình trạng.
                 if (existing?.id && !payload.trang_thai && !payload.tinh_trang) {

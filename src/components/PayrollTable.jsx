@@ -67,17 +67,16 @@ const penaltiesForEmployee = (penalties, row) => {
   return { total, items }
 }
 
-const kpiSalaryFor = (kpiByEmployee, employeeId, salary) => {
-  const result = kpiByEmployee.get(String(employeeId))
-  if (!result) return { amount: null, percent: null }
-  const percent = Number(result.totalKPI ?? result.kpiTong)
-  if (!Number.isFinite(percent)) return { amount: null, percent: null }
-  const base = Number(String(salary ?? '').replace(/[^\d.-]/g, ''))
-  const amount = Number.isFinite(base) ? Math.round(base * percent / 100) : null
-  return { amount, percent }
-}
+const SalaryDetail = ({ payroll }) => <>
+  {moneyOrDash(payroll.amount)}
+  {payroll.error && <small role="alert">{payroll.error}</small>}
+  {payroll.legacy && <small>Cần đối chiếu mức lương cũ</small>}
+  {payroll.segments.map(segment => <small key={`${segment.effectiveDate}-${segment.percent}`}>
+    {segment.effectiveDate === '0001-01-01' ? 'Mức cũ' : `Từ ${formatDateDisplay(segment.effectiveDate)}`}: {formatMoney(segment.amount)} × {segment.percent}% · {workdaysText(segment.workdays)} công
+  </small>)}
+</>
 
-export default function PayrollTable({ rows, employeesById, penalties, leaveSettings, kpiByEmployee, month }) {
+export default function PayrollTable({ rows, employeesById, penalties, leaveSettings, month }) {
   return (
     <>
       <div className="attendance-preview-scroll">
@@ -100,7 +99,7 @@ export default function PayrollTable({ rows, employeesById, penalties, leaveSett
               <th rowSpan={2}>Giờ tăng ca</th>
               <th rowSpan={2}>Công làm lễ</th>
               <th rowSpan={2}>Tổng công</th>
-              <th rowSpan={2}>Lương</th>
+              <th rowSpan={2}>Lương theo công</th>
               <th rowSpan={2}>Lương KPIs</th>
             </tr>
             <tr className="groups">
@@ -118,8 +117,7 @@ export default function PayrollTable({ rows, employeesById, penalties, leaveSett
               const employee = employeesById.get(String(row.employeeId)) || {}
               const penalty = penaltiesForEmployee(penalties, row)
               const leave = yearLeaveFor(leaveSettings, row.employeeId, month, Number(row.paidLeaveWorkdays || 0))
-              const salary = employee.tong_luong || employee.total_salary || ''
-              const kpi = kpiSalaryFor(kpiByEmployee, row.employeeId, salary)
+              const kpi = row.payrollKpi
               return (
                 <tr key={row.employeeId}>
                   <td>{index + 1}</td>
@@ -152,8 +150,9 @@ export default function PayrollTable({ rows, employeesById, penalties, leaveSett
                   <td>{workdaysText(row.overtimeHours)}</td>
                   <td>{workdaysText(holidayWorkdaysFor(row))}</td>
                   <td><strong>{workdaysText(row.workdays)}</strong></td>
-                  <td>{moneyOrDash(salary)}</td>
+                  <td><SalaryDetail payroll={row.payroll} /></td>
                   <td>
+                    {kpi.error && <small role="alert">{kpi.error}</small>}
                     {kpi.amount === null && kpi.percent === null ? '—' : (
                       <>
                         {kpi.amount !== null ? formatMoney(kpi.amount) : '—'}
@@ -172,8 +171,7 @@ export default function PayrollTable({ rows, employeesById, penalties, leaveSett
           const employee = employeesById.get(String(row.employeeId)) || {}
           const penalty = penaltiesForEmployee(penalties, row)
           const leave = yearLeaveFor(leaveSettings, row.employeeId, month, Number(row.paidLeaveWorkdays || 0))
-          const salary = employee.tong_luong || employee.total_salary || ''
-          const kpi = kpiSalaryFor(kpiByEmployee, row.employeeId, salary)
+          const kpi = row.payrollKpi
           return (
             <article className="payroll-mobile-card" key={row.employeeId}>
               <header>
@@ -193,8 +191,8 @@ export default function PayrollTable({ rows, employeesById, penalties, leaveSett
                 <div><dt>Tăng ca</dt><dd>{workdaysText(row.overtimeHours)}</dd></div>
                 <div><dt>Công làm lễ</dt><dd>{workdaysText(holidayWorkdaysFor(row))}</dd></div>
                 <div><dt>Tổng công</dt><dd>{workdaysText(row.workdays)}</dd></div>
-                <div><dt>Lương</dt><dd>{moneyOrDash(salary)}</dd></div>
-                <div><dt>Lương KPIs</dt><dd>{kpi.amount !== null ? formatMoney(kpi.amount) : '—'}</dd></div>
+                <div><dt>Lương theo công</dt><dd><SalaryDetail payroll={row.payroll} /></dd></div>
+                <div><dt>Lương KPIs</dt><dd>{kpi.error || (kpi.amount !== null ? formatMoney(kpi.amount) : '—')}</dd></div>
               </dl>
               <div className="payroll-penalty">
                 <div className="payroll-penalty__total">Tổng phạt: {formatMoney(penalty.total)}</div>

@@ -6,7 +6,7 @@ import {
 } from '../utils/attendanceSummary'
 import { rebuildAttendanceMonthSummary } from '../services/attendanceMonthSummary'
 import AttendanceImportModal from '../components/AttendanceImportModal'
-import PayrollSummary from '../components/PayrollSummary'
+import PayrollSheet from '../components/PayrollSheet'
 import ResetAttendanceModal from '../components/ResetAttendanceModal'
 import { supabase } from '../services/supabase'
 import { dayOfWeekFromDate, formatTimeHM } from '../components/AttendanceModal'
@@ -1326,7 +1326,7 @@ function AttendancePreview() {
           {canEditWorkdays && <button type="button" className={sheet === 'payroll' ? 'is-active' : ''} onClick={() => setSheet('payroll')}>Bảng lương</button>}
         </div>
         {sheet === 'payroll' ? (
-          <PayrollSummary
+          <PayrollSheet
             key={`${companyId}:${month}`}
             rows={rows}
             month={month}

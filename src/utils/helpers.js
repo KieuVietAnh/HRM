@@ -104,6 +104,8 @@ export const USERS_DIRECTORY_COLUMNS = [
   'bank_account_name',
   'salary_mechanism',
   'total_salary',
+  'salary_effective_date',
+  'probation_salary_percent',
   'avatar_url'
 ].join(', ')
 
@@ -294,7 +296,9 @@ export const mapUserToApp = (user) => {
     so_tk: asIdentityText(user.bank_account_number, 'generic'),
     ten_tai_khoan: user.bank_account_name || '',
     co_che_luong: user.salary_mechanism || '',
-    tong_luong: user.total_salary || '',
+    tong_luong: user.total_salary ?? '',
+    ngay_hieu_luc_luong: user.salary_effective_date || '',
+    ty_le_luong_thu_viec: user.probation_salary_percent ?? 100,
     avatarDataUrl: user.avatar_url || '',
     files: Array.isArray(user.documents)
       ? user.documents
@@ -398,8 +402,11 @@ export const mapAppToUser = (data) => {
     bank_name: data.ngan_hang || data.bank_name || '',
     bank_account_number: asIdentityText(data.so_tk ?? data.bank_account_number, 'generic'),
     bank_account_name: data.ten_tai_khoan || data.bank_account_name || '',
-    salary_mechanism: data.co_che_luong || '',
-    total_salary: data.tong_luong || '',
+    ...(Object.hasOwn(data, 'co_che_luong') ? { salary_mechanism: data.co_che_luong || '' } : {}),
+    ...(Object.hasOwn(data, 'tong_luong') ? { total_salary: data.tong_luong === '' ? '' : String(data.tong_luong) } : {}),
+    ...(data.ngay_hieu_luc_luong ? { salary_change_effective_date: parseFlexibleDate(data.ngay_hieu_luc_luong) } : {}),
+    ...(data.ty_le_luong_thu_viec !== undefined && data.ty_le_luong_thu_viec !== ''
+      ? { probation_salary_percent: Number(data.ty_le_luong_thu_viec) } : {}),
     avatar_url: data.avatarDataUrl || data.avatarUrl || data.avatar || '',
     documents: Array.isArray(data.files) ? data.files.map(f => ({
       name: f.name || '',
@@ -461,6 +468,9 @@ export const runUsersMutationWithSchemaFallback = async (mutateFn, initialPayloa
     }
 
     const fallback = removeMissingUsersColumnFromPayload(payload, error)
+    if (['total_salary', 'salary_change_effective_date', 'probation_salary_percent'].includes(fallback.removedColumn)) {
+      return { error: new Error('Cần cập nhật database lịch sử lương trước khi lưu mức lương.'), payload, removedColumns }
+    }
     if (!fallback.removedColumn) {
       return { error, payload, removedColumns }
     }

@@ -12,7 +12,7 @@ const money = value => value === null ? 'Chưa nhập đủ' : formatMoney(value
 const quantity = value => value === null ? 'Cần đối chiếu' : Number(value).toLocaleString('vi-VN', { maximumFractionDigits: 2 })
 const searchText = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').toLowerCase()
 
-export default function PayrollSummary({ rows, month, companyId, search = '' }) {
+export default function PayrollSummary({ rows, month, companyId, search = '', frozen, readOnly = false, onStateChange }) {
   const { user } = useAuth()
   const [loaded, setLoaded] = useState(null)
   const [drafts, setDrafts] = useState({})
@@ -33,6 +33,10 @@ export default function PayrollSummary({ rows, month, companyId, search = '' }) 
   useEffect(() => {
     let cancelled = false
     setLoaded(null); setDrafts({}); setError(''); setNotice(''); setSelected(null); setConflict(false)
+    if (frozen) {
+      setLoaded({ key: contextKey, employees: frozen.employees || {}, saved: { data: frozen.payrollSummary || { records: {} } } })
+      return () => { cancelled = true }
+    }
     Promise.all([fbGetEmployeesDirectory(companyId), loadPayrollSummary(supabase, companyId, month)])
       .then(([employees, saved]) => {
         if (cancelled) return
@@ -48,15 +52,19 @@ export default function PayrollSummary({ rows, month, companyId, search = '' }) 
         } catch { setNotice('Không khôi phục được bản nháp trong trình duyệt.') }
       }).catch(cause => { if (!cancelled) setError(cause.message || 'Không tải được bảng lương.') })
     return () => { cancelled = true }
-  }, [companyId, month, cacheKey, contextKey, retry])
+  }, [companyId, month, cacheKey, contextKey, retry, frozen])
 
   useEffect(() => {
-    if (!ready || conflict) return
+    onStateChange?.({ ready, dirty: dirtyCount > 0, saving, data: loaded?.saved?.data || { records: {} } })
+  }, [ready, dirtyCount, saving, loaded, onStateChange])
+
+  useEffect(() => {
+    if (!ready || conflict || frozen) return
     try {
       if (dirtyCount) sessionStorage.setItem(cacheKey, JSON.stringify({ revision: loaded.saved?.updated_at || null, drafts }))
       else sessionStorage.removeItem(cacheKey)
     } catch { setNotice('Không lưu được bản nháp trong trình duyệt. Hãy lưu thay đổi trước khi rời trang.') }
-  }, [cacheKey, ready, loaded, drafts, dirtyCount, conflict])
+  }, [cacheKey, ready, loaded, drafts, dirtyCount, conflict, frozen])
 
   useEffect(() => {
     if (!dirtyCount) return undefined
@@ -91,12 +99,13 @@ export default function PayrollSummary({ rows, month, companyId, search = '' }) 
   try { totals = payrollSummaryTotals(visible) } catch (cause) { totalError = cause.message }
 
   function edit(id, patch) {
+    if (readOnly) return
     setDrafts(previous => ({ ...previous, [id]: { ...previous[id], ...patch } }))
     setError(''); setNotice('')
   }
 
   async function save(ids = Object.keys(drafts)) {
-    if (saving || !ready || conflict) return
+    if (readOnly || saving || !ready || conflict) return
     const changed = records.filter(row => ids.includes(row.employeeId))
     if (!changed.length) return
     const invalid = changed.find(row => row.error || String(row.note || '').length > 1000)
@@ -158,7 +167,7 @@ export default function PayrollSummary({ rows, month, companyId, search = '' }) 
       <label>Bộ phận <select value={department} onChange={event => setDepartment(event.target.value)}><option value="">Tất cả</option>
         {[...new Set(records.map(row => row.department).filter(Boolean))].sort().map(value => <option key={value}>{value}</option>)}
       </select></label>
-      <button type="button" disabled={saving || !dirtyCount || conflict} onClick={() => save()}>{saving ? 'Đang lưu...' : `Lưu thay đổi${dirtyCount ? ` (${dirtyCount})` : ''}`}</button>
+      <button type="button" disabled={readOnly || saving || !dirtyCount || conflict} onClick={() => save()}>{saving ? 'Đang lưu...' : `Lưu thay đổi${dirtyCount ? ` (${dirtyCount})` : ''}`}</button>
       <button type="button" disabled={saving || !visible.length} onClick={exportExcel}>Xuất Excel</button>
       {dirtyCount > 0 && <button type="button" disabled={saving} onClick={() => {
         if (window.confirm('Bỏ toàn bộ các ô chưa lưu của tháng này?')) {
@@ -166,7 +175,7 @@ export default function PayrollSummary({ rows, month, companyId, search = '' }) 
         }
       }}>Bỏ nháp</button>}
     </div>
-    <p className="payroll-summary-help">Bấm tên để nhập và xem phân bổ lương. Gõ trực tiếp BHXH, Đã ứng; dùng Tab / Enter để chuyển ô hoặc dán hai cột từ Excel.</p>
+    <p className="payroll-summary-help">{readOnly ? 'Bảng lương đã khóa. Có thể xem phân bổ và xuất Excel.' : 'Bấm tên để nhập và xem phân bổ lương. Gõ trực tiếp BHXH, Đã ứng; dùng Tab / Enter để chuyển ô hoặc dán hai cột từ Excel.'}</p>
     <p className="payroll-summary-formula">Thực nhận = Tổng lương nhận − BHXH − Đã ứng. Công chính và tăng ca hiển thị riêng theo đơn vị công / giờ.</p>
     {(error || notice || totalError) && <p role={error || totalError ? 'alert' : 'status'} className={error || totalError ? 'payroll-summary-error' : ''}>{error || totalError || notice}</p>}
     <div className="payroll-summary-scroll" ref={grid}>
@@ -178,11 +187,12 @@ export default function PayrollSummary({ rows, month, companyId, search = '' }) 
           <td>{quantity(row.mainWorkdays)}</td><td>{quantity(row.overtimeHours)}</td>
           <td title={row.error}>{row.amounts ? money(row.amounts.gross) : 'Ô nhập không hợp lệ'}</td>
           {['insurance', 'advance'].map((field, columnIndex) => <td className={`payroll-summary-edit ${Object.hasOwn(drafts[row.employeeId] || {}, field) ? 'is-changed' : ''}`} key={field}>
-            <input aria-label={`${field === 'insurance' ? 'BHXH' : 'Đã ứng'} — ${row.name}`} inputMode="numeric" value={row[field] ?? ''} disabled={saving}
+            <input aria-label={`${field === 'insurance' ? 'BHXH' : 'Đã ứng'} — ${row.name}`} inputMode="numeric" value={row[field] ?? ''} disabled={readOnly || saving}
               data-row={index} data-column={columnIndex} aria-invalid={Boolean(row.error)}
               onFocus={event => { event.currentTarget.dataset.original = event.currentTarget.value; event.target.select() }} onChange={event => edit(row.employeeId, { [field]: event.target.value })}
               onKeyDown={event => moveCell(event, index, columnIndex)}
               onPaste={event => {
+                if (readOnly) return
                 const text = event.clipboardData.getData('text')
                 if (!/[\t\r\n]/.test(text)) return
                 event.preventDefault()
@@ -208,16 +218,18 @@ export default function PayrollSummary({ rows, month, companyId, search = '' }) 
       <p>Công chính: <strong>{quantity(detail.mainWorkdays)}</strong> · Tăng ca: <strong>{quantity(detail.overtimeHours)} giờ</strong>. Số công được lưu cùng bảng lương khi lưu nhân viên.</p>
       <p>Lương hồ sơ tham khảo: <strong>{detail.referenceSalary || 'Chưa có'}</strong>. Nhập số tiền phân bổ thực tế bên dưới; hệ thống tự cộng tổng.</p>
       <form onSubmit={event => { event.preventDefault(); save([detail.employeeId]) }}>
+        <fieldset disabled={readOnly}>
         <table className="payroll-allocation-table"><thead><tr><th scope="col">Khoản thu nhập</th><th scope="col">Số tiền (VNĐ)</th></tr></thead>
           <tbody>{PAYROLL_COMPONENTS.map(([field, label]) => <tr key={field}><th scope="row"><label htmlFor={`payroll-${field}`}>{label}</label></th><td><input id={`payroll-${field}`} inputMode="numeric" disabled={saving} placeholder="Nhập số tiền" value={detail[field] ?? ''} onChange={event => edit(detail.employeeId, { [field]: event.target.value })} /></td></tr>)}</tbody>
           <tfoot><tr><th scope="row">Tổng lương nhận</th><td>{detail.amounts ? money(detail.amounts.gross) : '—'}</td></tr></tfoot>
         </table>
         <div className="payroll-summary-deductions">{[['insurance', 'BHXH'], ['advance', 'Đã ứng']].map(([field, label]) => <label key={field}>{label} (VNĐ)<input inputMode="numeric" disabled={saving} value={detail[field] ?? ''} onChange={event => edit(detail.employeeId, { [field]: event.target.value })} /></label>)}</div>
         <label className="payroll-summary-note">Ghi chú phân bổ / điều chỉnh<textarea maxLength={1000} disabled={saving} value={detail.note || ''} onChange={event => edit(detail.employeeId, { note: event.target.value })} /></label>
+        </fieldset>
         <div className="payroll-summary-result"><span>Thực nhận</span><strong>{detail.amounts ? money(detail.amounts.net) : '—'}</strong></div>
         {(detail.error || error) && <p role="alert" className="payroll-summary-error">{detail.error || error}</p>}
         {notice && <p role="status">{notice}</p>}
-        <footer><span>Đóng cửa sổ giữ các ô trong bản nháp.</span><button type="button" disabled={saving} onClick={() => dialog.current.close()}>Về danh sách</button><button type="submit" disabled={saving || conflict || !drafts[detail.employeeId]}>{saving ? 'Đang lưu...' : 'Lưu nhân viên'}</button></footer>
+        <footer><span>{readOnly ? 'Kỳ lương đã khóa.' : 'Đóng cửa sổ giữ các ô trong bản nháp.'}</span><button type="button" disabled={saving} onClick={() => dialog.current.close()}>Về danh sách</button><button type="submit" disabled={readOnly || saving || conflict || !drafts[detail.employeeId]}>{saving ? 'Đang lưu...' : 'Lưu nhân viên'}</button></footer>
       </form>
     </dialog>}
   </section>
