@@ -1,0 +1,64 @@
+.leave-board-page,
+.leave-settings-panel { display: grid; gap: 18px; min-width: 0; }
+.leave-board-header,
+.leave-settings-toolbar { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.leave-board-header h1 { margin: 0 0 6px; color: #0f3f78; }
+.leave-board-header p,
+.leave-settings-toolbar p { margin: 0; color: #64748b; line-height: 1.5; }
+.leave-settings-toolbar h2 { margin: 0 0 6px; color: #0f3f78; font-size: 20px; }
+.leave-board-header-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.leave-board-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; padding: 16px; background: #fff; border: 1px solid #dbe5f0; border-radius: 12px; }
+.leave-board-filters label,
+.leave-search { display: grid; gap: 6px; color: #334155; font-weight: 600; }
+.leave-board-filters input,
+.leave-board-filters select,
+.leave-search input,
+.leave-year-add input,
+.leave-year-body input { min-height: 40px; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; background: #fff; color: #1e293b; }
+.leave-board-filters input { min-width: 240px; }
+.leave-board-filters select { min-width: 180px; }
+.leave-board-count { margin-left: auto; color: #64748b; font-weight: 600; }
+.leave-board-scroll { width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; background: #fff; border: 1px solid #dbe5f0; border-radius: 12px; }
+.leave-board-table { width: 100%; min-width: 1280px; border-collapse: collapse; font-size: 14px; }
+.leave-board-table th,
+.leave-board-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; white-space: nowrap; }
+.leave-board-table thead th { position: sticky; top: 0; background: #f1f5f9; color: #334155; font-weight: 700; }
+.leave-board-table th:first-child { position: sticky; left: 0; z-index: 1; min-width: 170px; text-align: left; background: #fff; }
+.leave-board-table thead th:first-child { z-index: 2; background: #f1f5f9; }
+.leave-board-table tbody tr:last-child th,
+.leave-board-table tbody tr:last-child td { border-bottom: 0; }
+.leave-board-table tbody tr:hover td,
+.leave-board-table tbody tr:hover th { background: #f8fbff; }
+.leave-board-table small { display: block; margin-top: 3px; color: #64748b; font-weight: 400; }
+.leave-board-total { color: #0f3f78; font-weight: 700; }
+.leave-settings-panel { padding: 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; }
+.leave-search { max-width: 360px; }
+.leave-empty { padding: 20px 0; color: #64748b; }
+.leave-employee-list { display: grid; gap: 10px; }
+.leave-employee { border: 1px solid #dbe5f0; border-radius: 10px; overflow: hidden; }
+.leave-employee-toggle,
+.leave-year-toggle { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 0; text-align: left; cursor: pointer; font: inherit; }
+.leave-employee-toggle { padding: 14px 16px; background: #f8fafc; color: #0f3f78; }
+.leave-employee-toggle small { display: block; margin-top: 4px; color: #64748b; }
+.leave-employee-content { display: grid; gap: 12px; padding: 16px; }
+.leave-year-add { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.leave-year-add input { width: 120px; }
+.leave-year { border: 1px solid #dbe5f0; border-radius: 8px; overflow: hidden; }
+.leave-year-toggle { padding: 12px 14px; background: #f1f5f9; color: #0f3f78; }
+.leave-year-body { display: grid; gap: 16px; padding: 16px; border: 0; }
+.leave-year-body label { display: grid; gap: 6px; color: #334155; font-weight: 600; }
+.leave-total-field { max-width: 220px; }
+.leave-month-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.leave-month-grid input { width: 100%; min-width: 0; }
+.leave-actions { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
+.leave-actions span { color: #b45309; font-size: 13px; }
+@media (max-width: 760px) {
+  .leave-board-header,
+  .leave-settings-toolbar { flex-direction: column; align-items: stretch; }
+  .leave-board-count { margin-left: 0; }
+  .leave-board-filters label,
+  .leave-board-filters input,
+  .leave-search { width: 100%; max-width: none; min-width: 0; }
+  .leave-month-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .leave-settings-panel { padding: 14px; }
+}

@@ -1,0 +1,343 @@
+/* Mobile presentation only. /employees is the approved reference, not a target.
+   Route CSS and all desktop rules remain in place. */
+.mobile-field-label { display: none; }
+@media (max-width: 768px) {
+  .app-shell .mobile-field-label { display: block; color: #64748b; font-size: 12px; }
+  .app-shell:not(:has(.employees-page)), .system-login, .employee-login {
+    --mobile-inset: 14px;
+    --mobile-gap: 12px;
+    --mobile-radius: 12px;
+    --mobile-border: #e2e8f0;
+    --mobile-shadow: 0 1px 3px rgb(0 0 0 / 3%);
+    font-family: var(--font-sans);
+    background: #f8fafc;
+  }
+  .app-shell:not(:has(.employees-page)) .container {
+    display: block; min-width: 0; padding: 0; margin: 0; width: 100%;
+  }
+  .app-shell:not(:has(.employees-page)) .main {
+    min-width: 0; width: 100%; padding: var(--mobile-inset); background: #f8fafc;
+  }
+  .app-shell:not(:has(.employees-page)) .main > * { min-width: 0; max-width: 100%; }
+  .app-shell:not(:has(.employees-page)) .header { display: flex; height: 52px; padding: 0 14px; align-items: center; background: #fff; border-bottom: 1px solid var(--mobile-border); }
+  .app-shell:not(:has(.employees-page)) .mobile-priority-nav {
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0,1fr);
+    gap: 4px; padding: 10px 14px; background: #fff; border-bottom: 1px solid var(--mobile-border);
+  }
+  .app-shell:not(:has(.employees-page)) .mobile-priority-nav__link {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    min-width: 0; min-height: 44px; font-size: 11px; font-weight: 500; border-radius: 8px; color: var(--primary); text-decoration: none;
+  }
+  .app-shell:not(:has(.employees-page)) .mobile-priority-nav__link i { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; background: #eff6ff; font-size: 14px; }
+  .app-shell:not(:has(.employees-page)) .mobile-priority-nav__link.is-active { background: #eff6ff; font-weight: 600; }
+  .app-shell .mobile-utility-nav {
+    position: fixed;
+    left: 50%;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    z-index: 90;
+    display: flex;
+    gap: 2px;
+    padding: 6px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
+  }
+  .app-shell .mobile-utility-nav button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-width: 58px;
+    min-height: 44px;
+    padding: 6px 12px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .app-shell .mobile-utility-nav button i { font-size: 15px; }
+  .app-shell .mobile-utility-nav button:hover { background: var(--surface-muted); color: var(--primary); }
+  .app-shell .mobile-utility-nav button:active { background: var(--primary-soft); color: var(--primary); }
+  .app-shell .main { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+  .app-shell:not(:has(.employees-page)) .header { position: sticky; top: 0; z-index: 100; box-shadow: none; }
+  .app-shell:not(:has(.employees-page)) .header-menu-btn { display: inline-flex; width: 40px; height: 40px; background: #fff; color: #475569; border-radius: 8px; }
+  body.menu-open:has(.app-shell:not(:has(.employees-page))) { overflow: hidden; }
+  .app-shell:not(:has(.employees-page)) .sidebar { position: fixed; top: 0; bottom: 0; left: 0; width: 280px; height: 100dvh; max-width: calc(100vw - 44px); transform: translateX(-100%); z-index: 1001; overflow-y: auto; box-shadow: none; }
+  .app-shell:not(:has(.employees-page)) .sidebar.is-open { transform: translateX(0); box-shadow: 8px 0 28px rgb(2 20 44 / 28%); }
+  .app-shell:not(:has(.employees-page)) .sidebar-backdrop { display: block; position: fixed; inset: 0; background: rgb(15 23 42 / 40%); opacity: 0; pointer-events: none; z-index: 1000; }
+  .app-shell:not(:has(.employees-page)) .sidebar-backdrop.is-visible { opacity: 1; pointer-events: auto; }
+  .app-shell:not(:has(.employees-page)) .sidebar a { min-height: 44px; }
+  .app-shell:not(:has(.employees-page)) :is(h1,h2,h3,p,strong,small,label) { overflow-wrap: anywhere; }
+  .app-shell:not(:has(.employees-page)) .main h1 { font-size: 20px; line-height: 1.3; letter-spacing: -.3px; }
+  .app-shell:not(:has(.employees-page)) .main h2 { font-size: 17px; line-height: 1.4; }
+  .app-shell:not(:has(.employees-page)) .main h3 { font-size: 15px; line-height: 1.4; }
+  .app-shell:not(:has(.employees-page)) :is(.btn,.apv-btn,.oa-btn-settings,.oa-btn-view) {
+    min-height: 40px; max-width: 100%; padding: 9px 12px; border-radius: 8px; font-size: 13px; line-height: 1.4;
+  }
+  .app-shell:not(:has(.employees-page)) :is(input,select,textarea):not([type=checkbox]):not([type=radio]):not([type=file]) {
+    min-width: 0; max-width: 100%; min-height: 44px; border-radius: 8px; font-family: inherit; font-size: 16px;
+  }
+  .app-shell:not(:has(.employees-page)) :is(input[type=checkbox],input[type=radio]) { width: 20px; height: 20px; flex-shrink: 0; }
+  .app-shell:not(:has(.employees-page)) button:disabled { cursor: default; }
+  .app-shell:not(:has(.employees-page)) :is(.card,.holiday-settings-card,.leave-settings-panel,.penalty-card,.attendance-preview-mobile-card,.my-attendance__mobile-day,.apv-card,.apv-card-block,.apv-stats-mobile__card) {
+    border: 1px solid var(--mobile-border); border-radius: var(--mobile-radius); box-shadow: var(--mobile-shadow); background: #fff;
+  }
+  .app-shell:not(:has(.employees-page)) :is(.oa-header,.leave-days-header,.leave-board-header,.holiday-settings-head,.my-attendance__header,.attendance-preview-page > header,.attendance-penalties-page > header) {
+    display: flex; flex-direction: column; align-items: stretch; gap: 12px;
+    margin: 0 0 12px; padding: 14px; border: 1px solid var(--mobile-border);
+    border-radius: var(--mobile-radius); background: #fff; box-shadow: var(--mobile-shadow);
+  }
+  .app-shell:not(:has(.employees-page)) :is(.oa-subtitle,.leave-days-header p,.leave-board-header p,.holiday-settings-head p,.my-attendance__header p) {
+    font-size: 12px; line-height: 1.5; margin: 4px 0 0; color: #64748b;
+  }
+  .app-shell:not(:has(.employees-page)) :is(.oa-header-actions,.leave-board-header-actions,.my-attendance__header-actions,.attendance-preview-actions,.attendance-penalties-actions) {
+    display: flex; flex-wrap: wrap; flex-direction: row; align-items: center; gap: 8px; min-width: 0;
+  }
+
+  /* Online attendance: hero clock + touch-friendly actions. */
+  .app-shell .online-attendance-v2 { padding: 0; }
+  .app-shell .oa-btn-view { min-height: 40px; }
+  .app-shell .oa-btn-view:not(.oa-btn-view--ghost) { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .app-shell .oa-btn-view--ghost { background: #fff; border-color: var(--border); color: var(--text); }
+  .app-shell :is(.attendance-preview-page,.attendance-penalties-page) { padding: 0; background: transparent; font-family: inherit; }
+  .app-shell .attendance-preview-empty {
+    display: grid; gap: 10px; min-height: 0; padding: 20px 14px;
+    border: 1px solid #e2e8f0; border-radius: 12px; background: #fff;
+    box-shadow: var(--mobile-shadow); font-size: 13px; line-height: 1.6;
+  }
+  .app-shell .attendance-preview-empty p { margin: 0; }
+  .app-shell :is(.attendance-preview-state,.attendance-penalties-state) {
+    display: block; min-height: 0; padding: 20px 14px; margin: 0;
+    border: 1px solid #e2e8f0; border-radius: 12px; background: #fff;
+    font-size: 14px; line-height: 1.6; text-align: center; overflow-wrap: anywhere;
+  }
+  .app-shell :is(.attendance-preview-page,.attendance-penalties-page) > header { color: var(--primary); }
+  .app-shell :is(.attendance-preview-page,.attendance-penalties-page) > header p { color: #64748b; font-size: 12px; line-height: 1.5; }
+  .app-shell :is(.attendance-preview-actions,.attendance-penalties-actions) label { display: grid; flex: 1 1 calc(50% - 8px); gap: 5px; font-size: 12px; min-width: 0; }
+  .app-shell :is(.attendance-preview-actions,.attendance-penalties-actions) label :is(input,select) { width: 100%; }
+  .app-shell .attendance-preview-actions > .attendance-preview-import-btn { flex: 1 1 100%; min-height: 40px; background: var(--primary); font-size: 13px; border-radius: 8px; }
+  .app-shell .mobile-actions { position: relative; width: 100%; }
+  .app-shell .mobile-actions__toggle { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 40px; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; color: var(--primary); background: #fff; font: inherit; font-size: 13px; cursor: pointer; }
+  .app-shell .mobile-actions__panel { display: grid; gap: 8px; margin-top: 8px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
+  .app-shell .mobile-actions__panel button { width: 100%; min-height: 40px; padding: 8px 12px; border-radius: 8px; font-size: 13px; white-space: normal; }
+  .app-shell .mobile-actions__panel .attendance-preview-detail-btn { color: var(--primary); border-color: #e2e8f0; background: #f8fafc; }
+  .app-shell .oa-dashboard-grid { gap: 12px; margin-bottom: 12px; }
+  .app-shell .oa-clock-card {
+    padding: 20px 16px; border-radius: 16px; border: 0;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #fff; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+  }
+  .app-shell .oa-clock-card .oa-card-label { color: #94a3b8; }
+  .app-shell .oa-clock-card .oa-digital-clock { font-size: 2.6rem; letter-spacing: 0; }
+  .app-shell .oa-clock-meta { gap: 6px 10px; }
+  .app-shell .oa-clock-meta .oa-clock-date { color: #cbd5e1; font-size: 12px; }
+  .app-shell .oa-shift-badge { background: rgba(255, 255, 255, 0.12); color: #e2e8f0; font-size: 11px; padding: 3px 8px; }
+  .app-shell .oa-shift-badge strong { color: #38bdf8; }
+  .app-shell .oa-location-card {
+    padding: 14px; border-radius: 12px; border: 1px solid var(--border);
+    background: #fff; box-shadow: var(--mobile-shadow);
+  }
+  .app-shell .oa-punches-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; align-items: stretch; }
+  .app-shell .oa-punch-box { min-width: 0; padding: 14px; display: flex; flex-direction: column; }
+  .app-shell .oa-punch-header { flex-wrap: wrap; gap: 5px; min-height: 40px; align-content: flex-start; }
+  .app-shell .oa-punch-time { font-size: 20px; line-height: 1.25; margin-bottom: 6px; overflow-wrap: anywhere; }
+  .app-shell .oa-punch-status { margin-top: auto; min-height: 0; display: flex; align-items: flex-end; }
+  .app-shell .oa-punch-status .oa-badge { white-space: normal; line-height: 1.5; }
+  .app-shell .oa-action-card { padding: 16px; }
+  .app-shell .oa-action-card h3 { font-size: 16px; }
+  .app-shell .oa-photo-sources { flex-direction: column; }
+  .app-shell .oa-photo-sources .oa-btn-open-cam { width: 100%; }
+  .app-shell :is(.oa-btn-open-cam, .oa-btn-capture, .oa-btn-cancel-cam, .oa-btn-retake, .oa-btn-refresh-loc) { min-height: 44px; }
+  .app-shell .oa-btn-submit { min-height: 52px; font-size: 15px; border-radius: 12px; }
+  .app-shell .oa-completed-card { padding: 20px 16px; border-radius: 12px; }
+
+  /* Reuse existing attendance/penalty cards, including the 768px boundary. */
+  .app-shell .my-attendance__identity { grid-template-columns: repeat(2,minmax(0,1fr)); margin-bottom: 12px; }
+  .app-shell .my-attendance__identity div { padding: 12px; border: 0; }
+  .app-shell .my-attendance__stats { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin-bottom: 12px; }
+  .app-shell .my-attendance__stats .card { min-height: 80px; padding: 12px; }
+  .app-shell .my-attendance__table-wrap { display: none; }
+  .app-shell .my-attendance__mobile-list { display: grid; gap: 10px; padding: 12px; }
+  .app-shell .my-attendance__mobile-day { padding: 12px; }
+  .app-shell .my-attendance__mobile-day-head { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+  .app-shell .my-attendance__mobile-day-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+  .app-shell .my-attendance__mobile-day-grid > div { display: grid; gap: 4px; }
+  .app-shell .my-attendance__mobile-day-grid span { font-size: 11px; color: #64748b; }
+  .app-shell .attendance-preview-mobile { gap: 10px; }
+  .app-shell .attendance-preview-mobile-card { padding: 12px; }
+  .app-shell .attendance-preview-mobile-card__detail { min-height: 40px; }
+  .app-shell .attendance-preview-mobile-card__stats { gap: 8px; }
+  .app-shell .attendance-penalties-summary { gap: 10px; margin: 12px 0; }
+  .app-shell .penalty-card { padding: 12px; }
+  .app-shell .penalty-card__head button { min-width: 40px; min-height: 40px; }
+  .app-shell .attendance-penalties-actions button { min-height: 40px; border-radius: 8px; }
+  .app-shell .attendance-excel-detail-tools { flex-wrap: wrap; min-width: 0; }
+  .app-shell .attendance-excel-detail-tools input { width: 100%; }
+  .app-shell :is(.attendance-excel-detail-head,.attendance-day-detail-modal > header) { padding: 14px; background: #fff; color: var(--primary); border-bottom: 1px solid #e2e8f0; }
+  .app-shell :is(.attendance-excel-detail-head,.attendance-day-detail-modal > header) :is(h2,h3) { font-size: 16px; color: var(--primary); }
+  .app-shell .attendance-detail-mode-tabs { background: #f1f5f9; }
+  .app-shell .attendance-detail-mode-tabs button { color: #64748b; background: transparent; }
+  .app-shell .attendance-detail-mode-tabs button.is-active { color: var(--primary); background: #fff; }
+  .app-shell :is(.attendance-excel-detail-head,.attendance-day-detail-modal > header) p { color: #64748b; font-size: 12px; }
+  .app-shell :is(.attendance-excel-detail-head,.attendance-day-detail-modal > header) button { min-height: 40px; border-radius: 8px; }
+  .app-shell .attendance-day-detail-modal > header button { color: var(--primary); background: #f8fafc; border: 1px solid #e2e8f0; }
+  .app-shell .attendance-excel-detail-tools button:not(.attendance-excel-download-btn) { color: var(--primary); background: #f8fafc; border: 1px solid #e2e8f0; }
+  .app-shell .attendance-day-detail-scroll td { border: 0; }
+  .app-shell .attendance-day-detail-footer button { min-height: 40px; }
+  .app-shell .attendance-excel-detail-pager__controls { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 6px; width: 100%; }
+  .app-shell .attendance-excel-detail-pager__controls label { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; }
+  .app-shell .attendance-excel-detail-pager__controls button { min-width: 0; min-height: 40px; padding: 8px 4px; font-size: 12px; }
+  .app-shell .attendance-excel-detail-pager__page { min-width: 0; align-self: center; padding: 0; font-size: 11px; text-align: center; white-space: normal; }
+  .app-shell :is(.attendance-excel-detail-scroll,.attendance-preview-weeks__scroll) { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; }
+  .app-shell .attendance-excel-detail-scroll:not(.attendance-matrix-scroll) > table { display: block; width: 100%; min-width: 0; }
+  .app-shell .attendance-excel-detail-scroll:not(.attendance-matrix-scroll) thead { display: none; }
+  .app-shell .attendance-excel-detail-scroll:not(.attendance-matrix-scroll) tbody { display: grid; gap: 10px; padding: 12px; }
+  .app-shell .attendance-excel-detail-scroll:not(.attendance-matrix-scroll) tr { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
+  .app-shell .attendance-excel-detail-scroll:not(.attendance-matrix-scroll) td { display: grid; gap: 4px; min-width: 0; padding: 0; border: 0; white-space: normal; text-align: left; font-size: 13px; }
+  .app-shell .attendance-excel-detail-scroll:not(.attendance-matrix-scroll) td::before { content: attr(data-label); font-size: 11px; color: #64748b; }
+  .app-shell .attendance-excel-detail-scroll:not(.attendance-matrix-scroll) td:first-child:not([colspan]) { display: none; }
+  .app-shell .attendance-excel-detail-scroll:not(.attendance-matrix-scroll) td:is(:nth-child(3),[colspan]) { grid-column: 1 / -1; }
+  .app-shell .attendance-excel-detail-scroll:not(.attendance-matrix-scroll) td:nth-child(3) { font-weight: 700; color: var(--primary); }
+
+  /* Leave rows become employee cards; month values remain unchanged. */
+  .app-shell :is(.leave-board-page,.leave-days-page,.holiday-settings-page,.leave-settings-panel) { gap: 12px; }
+  .app-shell :is(.leave-board-filters,.leave-days-form,.leave-days-list) { padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
+  .app-shell .leave-board-filters label { flex: 1 1 100%; }
+  .app-shell .leave-board-filters input { width: 100%; min-width: 0; }
+  .app-shell .leave-board-count { margin-left: 0; font-size: 12px; }
+  .app-shell .leave-days-list-head { flex-direction: column; align-items: stretch; gap: 10px; }
+  .app-shell .leave-days-list-tools { display: flex; align-items: end; gap: 8px; }
+  .app-shell .leave-days-list-tools label { flex: 1; min-width: 0; }
+  .app-shell .leave-days-form-grid { grid-template-columns: 1fr; }
+  .app-shell :is(.leave-board-scroll,.leave-days-table-wrap) { overflow: visible; border: 0; background: transparent; }
+  .app-shell :is(.leave-board-table,.leave-days-table-wrap table) { display: block; min-width: 0; width: 100%; }
+  .app-shell :is(.leave-board-table,.leave-days-table-wrap table) thead { display: none; }
+  .app-shell :is(.leave-board-table,.leave-days-table-wrap table) tbody { display: grid; gap: 10px; }
+  .app-shell :is(.leave-board-table,.leave-days-table-wrap table) tr {
+    display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px;
+    padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; box-shadow: var(--mobile-shadow);
+  }
+  .app-shell :is(.leave-board-table,.leave-days-table-wrap table) :is(td,tbody th) {
+    display: grid; gap: 4px; position: static; min-width: 0; padding: 0; border: 0; white-space: normal; text-align: left; font-size: 13px; background: transparent;
+  }
+  .app-shell :is(.leave-board-table,.leave-days-table-wrap table) td::before { content: attr(data-label); color: #64748b; font-size: 11px; font-weight: 400; }
+  .app-shell .leave-board-table tbody th { grid-column: 1 / -1; }
+  .app-shell .leave-board-table td:nth-child(2) { grid-column: span 2; }
+  .app-shell .leave-days-table-wrap table tr { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .app-shell .leave-days-table-wrap td:first-child { grid-column: 1 / -1; font-weight: 700; color: var(--primary); }
+  .app-shell .apv-field-row[style] { grid-template-columns: minmax(0,1fr) !important; }
+  .app-shell .holiday-settings-tabs { gap: 8px; }
+  .app-shell .holiday-settings-tab { flex: 1 1 calc(50% - 8px); min-height: 40px; font-size: 13px; border-radius: 8px; }
+  .app-shell :is(.holiday-settings-form,.holiday-settings-grid,.holiday-settings-session-grid,.holiday-settings-session,.holiday-settings-penalty-row) { grid-template-columns: 1fr; gap: 10px; }
+  .app-shell .holiday-settings-penalty-head { display: none; }
+  .app-shell .holiday-settings-penalty-row { padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; }
+  .app-shell .holiday-settings-card { padding: 14px; }
+  .app-shell .leave-settings-toolbar { flex-direction: column; gap: 10px; }
+  .app-shell .leave-month-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+  .app-shell :is(.leave-employee-content,.leave-year-body) { padding: 12px; }
+  .app-shell .leave-actions { flex-wrap: wrap; }
+
+  /* Approvals retain their existing views, filters and action handlers. */
+  .app-shell .apv { max-width: none; min-height: 70dvh; margin: 0; border: 0; border-radius: 0; box-shadow: none; overflow: visible; background: transparent; }
+  .app-shell .apv-topbar { padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; color: var(--primary); position: static; box-shadow: var(--mobile-shadow); }
+  .app-shell :is(.apv-topbar__back,.apv-topbar__icon) { width: 40px; height: 40px; flex-shrink: 0; }
+  .app-shell :is(.apv-topbar__back,.apv-topbar__icon) { background: #f1f5f9; color: var(--primary); }
+  .app-shell .apv-topbar__title small { font-size: 12px; font-weight: 400; color: #64748b; opacity: 1; }
+  .app-shell .apv-search { margin: 12px 0 0; min-height: 44px; padding: 0 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; }
+  .app-shell .apv-tabs { margin-top: 10px; padding: 0; gap: 16px; }
+  .app-shell .apv-tabs button { min-height: 40px; font-size: 13px; }
+  .app-shell .apv-tabs button.active { color: var(--primary); }
+  .app-shell .apv-tabs button.active::after { background: var(--primary); }
+  .app-shell .apv-chips { padding: 10px 0 0; overflow-x: auto; }
+  .app-shell .apv-chip { min-height: 40px; padding: 8px 12px; font-size: 12px; }
+  .app-shell :is(.apv-list,.apv-body,.apv-templates,.apv-stats) { padding: 12px 0 72px; gap: 10px; overflow: visible; }
+  .app-shell :is(.apv-card,.apv-card-block,.apv-stats-mobile__card) { padding: 12px; }
+  .app-shell .apv-card__title { font-size: 14px; }
+  .app-shell .apv-card__row { display: grid; grid-template-columns: 74px minmax(0,1fr); gap: 4px; font-size: 12px; }
+  .app-shell .apv-card__row span { -webkit-line-clamp: 2; }
+  .app-shell .apv-card__footer-name { white-space: normal; }
+  .app-shell .apv-badge { padding: 3px 8px; font-size: 11px; }
+  .app-shell :is(.apv-attach-btn,.apv-stats__period) { min-height: 40px; }
+  .app-shell :is(.apv-template-item__actions button,.apv-tpl-approver-chip button) { min-width: 40px; min-height: 40px; }
+  .app-shell .apv-attach-chip button { min-width: 36px; min-height: 36px; }
+  .app-shell .apv-fab { background: var(--primary); box-shadow: 0 2px 6px rgb(37 99 235 / 15%); }
+  .app-shell :is(.apv-field-row,.apv-field-row--equal,.apv-policy-grid) { grid-template-columns: 1fr; }
+  .app-shell .apv-field { min-width: 0; }
+  .app-shell .apv-actionbar { position: sticky; bottom: 0; padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); gap: 8px; background: #f8fafc; z-index: 12; flex-wrap: wrap; }
+  .app-shell .apv-stats__summary { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+  .app-shell .apv-stats__table-wrap { display: none; }
+  .app-shell .apv-stats-mobile { display: flex; flex-direction: column; gap: 10px; }
+  .app-shell .apv-stats-mobile__head { display: flex; align-items: start; justify-content: space-between; gap: 8px; }
+  .app-shell .apv-stats-mobile__head > div { display: grid; gap: 3px; }
+  .app-shell .apv-stats-mobile__numbers { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+  .app-shell .apv-stats-mobile__numbers span { display: grid; gap: 4px; font-size: 11px; }
+
+  /* All live dialogs, including employee subviews; do not target directory cards. */
+  .app-shell :is(.modal.show,.attendance-day-detail-overlay,.apv-picker-overlay,.apv-reject-overlay,.apv-stats-detail-overlay) { padding: 12px; }
+  .app-shell :is(.modal-content,.modal-content.modal-lg,.attendance-day-detail-modal,.attendance-excel-detail-modal,.apv-reject-modal__box,.apv-stats-detail-panel) {
+    width: 100%; min-width: 0; max-width: calc(100vw - 24px) !important;
+    max-height: calc(100dvh - 24px); border-radius: 12px; overflow-y: auto; overscroll-behavior-y: contain;
+  }
+  .app-shell :is(.apv-reject-modal,.apv-stats-detail-overlay) { position: fixed; padding: 12px; align-items: center; z-index: 1100; }
+  .app-shell .apv-picker__item { min-height: 44px; }
+  .app-shell .apv-picker__panel { max-height: min(320px,45dvh); }
+  .app-shell .apv-stats-detail-panel__close { min-width: 40px; min-height: 40px; }
+  .app-shell .apv-stats-detail-panel__body .apv-stats__table { display: block; width: 100%; min-width: 0; }
+  .app-shell .apv-stats-detail-panel__body thead { display: none; }
+  .app-shell .apv-stats-detail-panel__body tbody { display: grid; gap: 10px; }
+  .app-shell .apv-stats-detail-panel__body tr { display: grid; gap: 8px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; }
+  .app-shell .apv-stats-detail-panel__body td { display: grid; gap: 4px; padding: 0; border: 0; white-space: normal; }
+  .app-shell .apv-stats-detail-panel__body td::before { content: attr(data-label); color: #64748b; font-size: 11px; }
+  .app-shell .apv-stats-detail-panel__body td:first-child { display: none; }
+  .app-shell .apv-stats-detail-panel__body .apv-badge { justify-self: start; }
+  .app-shell :is(.modal-content,.status-history-view) { --mobile-shadow: 0 1px 3px rgb(0 0 0 / 3%); font-family: var(--font-sans); }
+  .app-shell :is(.modal-header,.modal-body,.modal-footer) { padding: 14px; min-width: 0; }
+  .app-shell .modal-header h3 { font-size: 16px; overflow-wrap: anywhere; }
+  .app-shell .modal-close { min-width: 40px; min-height: 40px; flex-shrink: 0; }
+  .app-shell .modal-content :is(.form-row,.form-grid) { display: grid; grid-template-columns: minmax(0,1fr); gap: 12px; }
+  .app-shell .modal-content :is(.form-group,.document-row,.document-item-info) { min-width: 0; }
+  .app-shell .modal-content :is(input,select,textarea):not([type=checkbox]):not([type=radio]):not([type=file]) { min-height: 44px; font-size: 16px !important; min-width: 0; max-width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; }
+  .app-shell .modal-content .btn { min-height: 40px; }
+  .app-shell .modal-content .form-actions { position: sticky; bottom: -14px; padding: 12px 0; background: #fff; flex-wrap: wrap; }
+  .app-shell .modal-content .modal-tabs { display: flex; overflow-x: auto; gap: 8px; }
+  .app-shell .modal-content .tab-btn { min-height: 40px; flex-shrink: 0; }
+  .app-shell .status-history-toolbar-actions { flex-wrap: wrap; }
+  .app-shell .status-history-dates { flex-wrap: wrap; max-width: 100%; }
+  .app-shell .status-history-dates input { min-width: 0; max-width: 100%; min-height: 44px; font-size: 16px; }
+  .app-shell .status-history-view :is(.card,.status-history-mobile-card) { border-radius: 12px; box-shadow: var(--mobile-shadow); }
+  .app-shell .status-history-mobile-list { display: grid; gap: 10px; padding: 12px; }
+  .app-shell .status-history-mobile-item { padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; box-shadow: var(--mobile-shadow); }
+  .app-shell .status-history-mobile-item:last-child { border-bottom: 1px solid #e2e8f0; }
+  .app-shell .feature-coming-soon { min-height: 60dvh; padding: 0; }
+  .app-shell .feature-coming-soon__card { padding: 24px 18px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: var(--mobile-shadow); }
+
+  /* Login appearance only: no authentication changes. */
+  .system-login { display: block; min-height: 100dvh; overflow: visible; }
+  .system-login .system-login__branding { display: none; }
+  .system-login .system-login__form-panel { width: 100%; min-height: 100dvh; padding: 24px 20px; background: #f8fafc; }
+  .system-login .system-login__form-wrap { width: 100%; max-width: 430px; margin: auto; padding: 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: var(--mobile-shadow); }
+  .system-login .system-login__intro { margin-bottom: 20px; }
+  .system-login .system-login__intro h1 { font-size: 24px; }
+  .system-login .system-login__intro p { font-size: 13px; line-height: 1.5; }
+  .system-login .system-login__intro img { width: 140px; height: 88px; }
+  .system-login .system-login__field input { min-height: 44px; font-size: 16px; border-radius: 8px; }
+  .system-login .system-login__field button { display: grid; place-items: center; width: 40px; height: 40px; right: 4px !important; }
+  .system-login .system-login__field button i { position: static; transform: none; }
+  .system-login .system-login__field input[autocomplete=current-password] { padding-right: 48px !important; }
+  .system-login .system-login__submit { width: 100%; min-height: 44px; border-radius: 8px; font-size: 14px; box-shadow: var(--mobile-shadow); }
+  .employee-login { min-height: 100dvh; padding: 14px; }
+  .employee-login .employee-login__card { padding: 24px 20px; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: var(--mobile-shadow); }
+  .employee-login .employee-login__card h1 { font-size: 22px; }
+  .employee-login .employee-login__card > p { font-size: 13px; line-height: 1.5; margin-bottom: 20px; }
+  .employee-login .employee-login__card input { min-height: 44px; font-size: 16px; }
+  .employee-login .employee-login__card button { min-height: 44px; font-size: 14px; }
+}

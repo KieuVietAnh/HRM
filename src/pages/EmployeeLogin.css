@@ -1,0 +1,20 @@
+.employee-login { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: linear-gradient(135deg, #082f5e, #0b4d8a); }
+.employee-login__card { width: 100%; max-width: 430px; min-width: 0; padding: 36px; overflow: hidden; background: #fff; border-radius: 16px; box-shadow: 0 24px 60px rgba(0, 22, 51, .28); }
+.employee-login__card > img { display: block; width: 132px; height: 82px; margin: 0 auto 14px; object-fit: contain; }
+.employee-login__card h1 { margin: 0; color: var(--primary); text-align: center; font-size: 1.7rem; }
+.employee-login__card > p { margin: 8px 0 26px; color: #64748b; text-align: center; }
+.employee-login__card form { display: grid; gap: 18px; }
+.employee-login__card label { display: grid; gap: 7px; color: #334155; font-weight: 600; }
+.employee-login__card input { width: 100%; padding: 12px 13px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; }
+.employee-login__card input:focus { border-color: #0b4d8a; outline: 3px solid rgba(11, 77, 138, .12); }
+.employee-login__card button { padding: 13px; color: #fff; background: var(--primary); border: 0; border-radius: 8px; font: inherit; font-weight: 700; cursor: pointer; }
+.employee-login__card button:disabled { opacity: .65; cursor: wait; }
+.employee-login__card > a { display: block; margin-top: 20px; color: #0b4d8a; text-align: center; }
+.employee-login__error { margin-bottom: 18px; padding: 11px 12px; color: #b42318; background: #fef3f2; border: 1px solid #fecdca; border-radius: 8px; }
+
+@media (max-width: 480px) {
+  .employee-login { padding: 14px; }
+  .employee-login__card { padding: 25px 20px; border-radius: 12px; }
+  .employee-login__card h1 { font-size: 1.45rem; overflow-wrap: anywhere; }
+  .employee-login__card input, .employee-login__card button { min-height: 48px; }
+}

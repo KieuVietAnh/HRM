@@ -1,0 +1,307 @@
+.holiday-settings-page {
+  display: grid;
+  gap: 18px;
+}
+
+.holiday-settings-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.holiday-settings-head h1 {
+  margin: 0 0 6px;
+  color: #0f3f78;
+}
+
+.holiday-settings-head p {
+  margin: 0;
+  color: #64748b;
+}
+
+.holiday-settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #dbe5f0;
+}
+
+.holiday-settings-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  background: transparent;
+  color: #64748b;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.holiday-settings-tab:hover {
+  color: #0f3f78;
+  background: #f8fafc;
+}
+
+.holiday-settings-tab.is-active {
+  color: #0f3f78;
+  border-bottom-color: #0f3f78;
+}
+
+.holiday-settings-card {
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgb(15 23 42 / 5%);
+}
+
+.holiday-settings-form {
+  display: grid;
+  grid-template-columns: minmax(160px, .8fr) minmax(220px, 1.5fr) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.holiday-settings-form label,
+.holiday-settings-grid label {
+  display: grid;
+  gap: 6px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.holiday-settings-form input,
+.holiday-settings-grid input,
+.holiday-settings-session input,
+.holiday-settings-penalty-row input {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+.holiday-settings-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.holiday-settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  background: #f8fafc;
+}
+
+.holiday-settings-item div {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.holiday-settings-item strong {
+  min-width: 92px;
+  color: #0f3f78;
+}
+
+.holiday-settings-item span,
+.holiday-settings-empty {
+  color: #64748b;
+}
+
+.holiday-settings-empty {
+  padding: 28px 0 8px;
+  text-align: center;
+}
+
+.holiday-settings-alert {
+  padding: 11px 14px;
+  border-radius: 8px;
+}
+
+.holiday-settings-alert.is-error {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.holiday-settings-alert.is-success {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.holiday-settings-shift-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.holiday-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.holiday-settings-shift-fields {
+  grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
+  align-items: end;
+}
+
+.holiday-settings-shift-fields label,
+.holiday-settings-session label {
+  min-width: 0;
+}
+
+.holiday-settings-shift-fields input,
+.holiday-settings-session input {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.holiday-settings-shift-pills .btn {
+  white-space: nowrap;
+}
+
+.holiday-settings-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  color: #334155;
+}
+
+.holiday-settings-split-card {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #f8fbff;
+}
+
+.holiday-settings-split-toggle {
+  margin-top: 0;
+  align-items: flex-start;
+}
+
+.holiday-settings-check > input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  margin: 3px 0 0;
+}
+
+.holiday-settings-split-toggle > span {
+  display: grid;
+  gap: 3px;
+}
+
+.holiday-settings-split-toggle strong {
+  color: #0f3f78;
+}
+
+.holiday-settings-split-toggle small,
+.holiday-settings-split-note {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.holiday-settings-session-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.holiday-settings-session {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #dbe5f0;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.holiday-settings-session h3 {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #0f3f78;
+  font-size: 15px;
+}
+
+.holiday-settings-session label {
+  display: grid;
+  gap: 6px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.holiday-settings-split-note {
+  margin: 12px 0 0;
+  line-height: 1.5;
+}
+
+.holiday-settings-penalty-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.holiday-settings-penalty-list {
+  display: grid;
+  gap: 8px;
+}
+
+.holiday-settings-penalty-head,
+.holiday-settings-penalty-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.6fr) minmax(140px, .7fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.holiday-settings-penalty-head {
+  padding: 0 2px 4px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .holiday-settings-head,
+  .holiday-settings-item div {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .holiday-settings-form,
+  .holiday-settings-grid,
+  .holiday-settings-session-grid,
+  .holiday-settings-session,
+  .holiday-settings-penalty-head,
+  .holiday-settings-penalty-row {
+    grid-template-columns: 1fr;
+  }
+
+  .holiday-settings-penalty-head {
+    display: none;
+  }
+
+  .holiday-settings-tab {
+    flex: 1 1 160px;
+    justify-content: center;
+  }
+}

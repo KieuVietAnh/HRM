@@ -1,0 +1,46 @@
+.attendance-corrections { display: grid; gap: 16px; max-width: 1020px; margin: 0 auto; }
+.attendance-corrections__header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.attendance-corrections__header h1 { margin: 7px 0 5px; color: #0b2d4d; font-size: clamp(1.45rem, 2.5vw, 2rem); }
+.attendance-corrections__header p { max-width: 680px; margin: 0; color: #64748b; }
+.attendance-corrections__back { color: #2563a6; font-size: .86rem; font-weight: 700; text-decoration: none; }
+.attendance-corrections__header > button { min-height: 40px; padding: 8px 13px; border: 1px solid #cbd5e1; border-radius: 8px; color: #0b3d73; background: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+.attendance-corrections__header > button:disabled { opacity: .6; cursor: default; }
+.attendance-corrections__list { display: grid; gap: 12px; }
+.attendance-corrections__card, .attendance-corrections__empty, .attendance-corrections__error, .attendance-corrections__notice { border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; box-shadow: 0 3px 14px rgb(15 23 42 / 4%); }
+.attendance-corrections__card { padding: 17px; }
+.attendance-corrections__card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.attendance-corrections__card-head h2 { margin: 0; color: #153959; font-size: 1.04rem; }
+.attendance-corrections__card-head h2 small { margin-left: 6px; color: #64748b; font-size: .8rem; font-weight: 500; }
+.attendance-corrections__card-head p { margin: 5px 0 0; color: #64748b; font-size: .87rem; }
+.attendance-corrections__status { padding: 5px 9px; border-radius: 999px; font-size: .76rem; font-weight: 700; white-space: nowrap; }
+.attendance-corrections__status.is-pending { color: #92400e; background: #fef3c7; }
+.attendance-corrections__status.is-approved { color: #166534; background: #dcfce7; }
+.attendance-corrections__status.is-rejected { color: #b42318; background: #fee2e2; }
+.attendance-corrections__times { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 15px 0; }
+.attendance-corrections__times > div { display: grid; grid-template-columns: auto 1fr auto 1fr; align-items: center; gap: 8px; min-height: 64px; padding: 10px; border: 1px solid #e2eaf3; border-radius: 9px; background: #f8fafc; }
+.attendance-corrections__times span { grid-column: 1 / -1; color: #64748b; font-size: .78rem; }
+.attendance-corrections__times strong { color: #334155; font-size: .88rem; }
+.attendance-corrections__times strong:last-child { color: #0b3d73; }
+.attendance-corrections__times i { color: #94a3b8; font-style: normal; }
+.attendance-corrections__reason { margin: 12px 0; }
+.attendance-corrections__reason strong, .attendance-corrections__comment { color: #334155; font-size: .85rem; font-weight: 700; }
+.attendance-corrections__reason p { margin: 4px 0 0; color: #475569; white-space: pre-wrap; }
+.attendance-corrections__comment { display: grid; gap: 6px; margin-top: 14px; }
+.attendance-corrections__comment textarea { width: 100%; padding: 9px 10px; border: 1px solid #cbd5e1; border-radius: 8px; color: #1e293b; background: #fff; font: inherit; font-size: .9rem; resize: vertical; }
+.attendance-corrections__actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 12px; }
+.attendance-corrections__actions button { min-height: 40px; padding: 8px 12px; border: 1px solid transparent; border-radius: 8px; font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; }
+.attendance-corrections__actions button:disabled { opacity: .6; cursor: default; }
+.attendance-corrections__actions .is-reject { border-color: #fecaca; color: #b42318; background: #fff7f7; }
+.attendance-corrections__actions .is-approve { color: #fff; background: #0b3d73; }
+.attendance-corrections__empty { padding: 34px 18px; color: #64748b; text-align: center; }
+.attendance-corrections__error, .attendance-corrections__notice { padding: 13px 15px; }
+.attendance-corrections__error { color: #b42318; background: #fef2f2; }
+.attendance-corrections__notice { color: #155e35; background: #f0fdf4; }
+@media (max-width: 640px) {
+  .attendance-corrections__header { align-items: flex-start; flex-direction: column; }
+  .attendance-corrections__header > button { width: 100%; }
+  .attendance-corrections__card { padding: 14px; }
+  .attendance-corrections__times { grid-template-columns: 1fr; }
+  .attendance-corrections__actions { flex-direction: column-reverse; }
+  .attendance-corrections__actions button { width: 100%; min-height: 44px; }
+}

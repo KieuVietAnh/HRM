@@ -1,0 +1,1580 @@
+﻿TÀI LIỆU PHÂN TÍCH LẬP TRÌNH CÔNG CỤ QUẢN LÝ ĐIỀU HÀNH
+CHO CÔNG TY LUMI GLOBAL
+----- oOo -----
+PHẦN QUẢN LÝ NHÂN SỰ
+
+
+A. Main:
+1. Mô hình luồng nghiệp vụ
+Luồng nghiệp vụ cụ thể cho các đối tượng sử dụng: Ban Giám đốc, HR, Kế toán, Quản lý bộ phận (Team Leader), Nhân viên với quyền xem, chỉnh sửa ở từng bảng, trường thông tin khác nhau ở 6 phần chính:
+1 - Hồ sơ nhân sự 
+2 - Quản trị bậc lương, thăng tiến 
+3 - Quản trị năng lực nhân sự 
+4 - Giao KPI và đánh giá KPI 
+5 - Quản trị giao việc 
+6 - Chấm công - tính lương, BHXH, Thuế Thu nhập
+
+
+
+
+________________
+
+
+2. Các tính năng của hệ thống
+TT
+	Hạng mục
+	Tên tính năng xử lý
+	Thực hiện yêu cầu
+	Lợi ích đạt được
+	Thời gian hoàn thành
+	1.1
+	Hồ sơ nhân sự
+	Quản lý hồ sơ nhân sự tập trung (HN + HCM)
+	Cho phép tạo, chỉnh sửa, tra cứu hồ sơ nhân sự theo miền, bộ phận, trạng thái làm việc; tách User đăng nhập và quyền theo nhóm chức danh hệ thống
+	Quản lý tập trung toàn bộ nhân sự, tránh trùng lặp dữ liệu, làm nền cho KPI - lương - 3P - Dashboard
+	 
+	1.2
+	Quản lý ảnh, file hợp đồng lao động và hồ sơ pháp lý
+	Cho phép upload ảnh, hợp đồng lao động, phụ lục, giấy tờ cá nhân
+	Lưu trữ hồ sơ đầy đủ, dễ tra cứu, đảm bảo tính pháp lý và minh bạch
+	 
+	1.3
+	Quản lý hồ sơ tuyển dụng
+	Có bảng định biên (Nhân sự hiện có, Định biên, Cần tuyển) và bảng Lịch trình ứng viên (CV tiếp nhận, CV đã liên hệ, CV phỏng vấn, CV thành công chuyển sang thử việc)
+	Xác định được số lượng nhu cầu tuyển dụng và quản lý ứng viên
+	 
+	1.4
+	Phân loại và quản lý trạng thái nhân sự
+	Có trường trạng thái: Thử việc, chính thức, tạm nghỉ, nghỉ việc; lưu lịch sử thay đổi trạng thái
+	Theo dõi vòng đời nhân sự, hỗ trợ báo cáo và tính lương chính xác
+	 
+	2.1
+	Quản trị bậc lương, thăng tiến
+	Quản trị bậc lương theo vị trí
+	HR khai báo bậc lương theo vị trí nhân sự
+	Chuẩn hóa lương P1, hạn chế trả lương cảm tính
+	 
+	2.2
+	Quản lý lịch sử thăng tiến & điều chỉnh bậc lương
+	Lưu lịch sử thăng chức, điều chỉnh bậc lương theo thời gian, lý do và người phê duyệt
+	Minh bạch lộ trình phát triển, dễ truy vết khi tính lương và đánh giá
+	 
+	3.1
+	Quản trị năng lực nhân sự 
+	Khung năng lực theo vị trí
+	HR khai báo bộ tiêu chí năng lực (chuyên môn, lãnh đạo, cá nhân) theo từng vị trí, Level của từng năng lực
+	Chuẩn hóa đánh giá năng lực, làm nền cho P2 trong 3P
+	 
+	3.2
+	Đánh giá năng lực nhân sự định kỳ
+	Trưởng bộ phận đánh giá năng lực theo kỳ; lưu điểm và nhận xét
+	Đánh giá khách quan, có dữ liệu để đào tạo và phát triển nhân sự
+	 
+	3.3
+	Quản lý đào tạo nội bộ
+	Tạo chương trình đào tạo nội bộ (Video online, offline), đào tạo ngoài, gán học viên, theo dõi tham gia, điểm thi, đánh giá sau đào tạo
+	Kiểm soát chất lượng đào tạo, gắn đào tạo với nâng cao năng lực
+	 
+	4.1
+	Giao KPI và đánh giá KPI
+	Giao KPI cá nhân và bộ phận
+	HR khai báo KPI theo tháng, gán cho nhân sự/bộ phận, quy định trọng số
+	Mục tiêu rõ ràng, đo lường hiệu suất minh bạch
+	 
+	4.2
+	Theo dõi & đánh giá KPI
+	Hệ thống tự động tổng hợp kết quả KPI từ các module liên quan (Sale, MKT, VĐ); report theo mẫu HR
+	Giảm thao tác thủ công, đảm bảo KPI phản ánh đúng hiệu quả thực tế
+	 
+	5.1
+	Quản trị giao việc
+	Quản trị giao việc nội bộ
+	Cấp quản lý tạo – giao – theo dõi công việc theo cá nhân/bộ phận; cập nhật trạng thái và deadline
+	Tăng tính chủ động, giảm bỏ sót việc, gắn công việc với KPI
+	 
+	6.1
+	Chấm công - tính lương, BHXH, Thuế Thu nhập
+	Chấm công nội bộ
+	Ghi nhận chấm công import từ excel và sửa thủ công
+	Kiểm soát giờ làm việc, làm cơ sở tính lương
+	 
+	6.2
+	Tính lương tổng hợp (công + lương 3P + thưởng nóng)
+	Tự động tổng hợp công, KPI, bậc lương để tính lương hàng tháng theo công thức của HR. Cộng tổng thưởng nóng
+	Tính lương nhanh, chính xác, minh bạch
+	 
+	6.3
+	Quản lý BHXH và Thuế TNCN
+	Lưu thông tin BHXH, người phụ thuộc, thuế; tính khấu trừ theo quy định
+	Đảm bảo tuân thủ pháp luật, giảm rủi ro sai sót
+	 
+	6.4
+	Phiếu lương & báo cáo nhân sự
+	Tạo phiếu lương cá nhân; báo cáo tổng quỹ lương
+	Minh bạch với nhân viên, hỗ trợ quản trị và ra quyết định
+	 
+	
+
+
+
+B. Đặc tả, phân tích thiết kế và cách thức thực hiện của từng hạng mục:
+I. Nền tảng sử dụng trên web đang có
+* Back-end: TypeScript, NestJS, RESTful API
+* Cơ sở dữ liệu: PostgreSQL
+* Front-end: HTML, CSS, JavaScript
+* UI Framework: Bootstrap
+* Deploy Front-end: Firebase Hosting
+* Kết nối FE – BE: REST API (Axios / Fetch)
+II. Nguyên tắc thiết kế
+* Module hóa theo nghiệp vụ HRM
+* Dữ liệu nhân sự là nguồn dữ liệu chuẩn (Single Source of Truth) cho:
+   * KPI
+   * Lương – 3P
+   * Dashboard quản trị
+* Tách bạch rõ:
+   * User (tài khoản đăng nhập, nhóm chức danh trên hệ thống phục vụ phân quyền)
+   * Employee (nhân sự thực tế, chức danh nhân sự phục vụ phân bậc lương)
+* Phân quyền xem, chỉnh sửa chi tiết theo vai trò:
+   * Ban Giám đốc
+   * HR
+   * Kế toán
+   * Trưởng bộ phận
+   * Nhân viên
+* Ghi nhận lịch sử thay đổi/chỉnh sửa (Audit log) cho các nghiệp vụ quan trọng: Hồ sơ, bậc lương, KPI, đánh giá năng lực, trạng thái nhân sự
+III. CÁC HẠNG MỤC TÍNH NĂNG CỦA HỆ THỐNG
+1. Quản trị Hồ sơ Nhân sự
+1.1. Quản lý hồ sơ nhân sự tập trung (HN + HCM)
+Mục tiêu nghiệp vụ
+* Gom toàn bộ nhân sự Hà Nội và TP.HCM vào mục Quản lý hồ sơ nhân sự
+* Tránh trùng lặp dữ liệu, cho phép chuyển đổi bộ phận làm việc (nếu có)
+* Là nền dữ liệu cho KPI – Lương – 3P – Dashboard
+Thiết kế Back-end
+* Module: hr
+* Entity chính: employee
+* Bảng dữ liệu (tên và số lượng bảng, trường tùy Dev lựa chọn, tối thiểu cần đủ các trường chính):
+   * employees
+   * employee_work_history
+* Trường dữ liệu chính:
+   * employee_code
+   * full_name
+   * region (HN / SG)
+   * department_id
+   * position_id
+   * status (probation / official / pause / resigned)
+   * joined_datev
+Hiển thị giao diện
+(Có nút tạo mới Nhân sự)
+STT
+	Mã nhân sự
+	Họ và tên
+	Miền làm việc
+	Bộ phận
+	Vị trí
+	Trạng thái làm việc
+	Ngày vào làm
+	Thao tác
+	1
+	NV001
+	Nguyễn Văn A
+	Hà Nội
+	Kinh doanh
+	Sale 3
+	Thử việc
+	1/3/2025
+	👁️ ✏️ 🗑️
+	2
+	NV002
+	Trần Thị B
+	Sài Gòn
+	Marketing
+	MKT 2
+	Chính thức
+	15/01/2024
+	👁️ ✏️ 🗑️
+	-Bổ sung thêm các cột: Ngày sinh, SĐT, mail, cccd, ngày cấp, nơi cấp,ngày chính thức, quê quán, giới tính, tình trạng hôn nhân.
+- Bổ sung nút upload file excel
+Thực tế đã thiết kế
+  
+
+Thực hiện yêu cầu
+* Cho phép tạo, chỉnh sửa, tra cứu tìm kiếm hồ sơ nhân sự (Theo Mã nhân sự / Họ tên)
+* Lọc theo miền (HN / SG), bộ phận (Dropdown bộ phận), trạng thái làm việc (Thử việc / Chính thức / Tạm nghỉ / Nghỉ việc)
+* Tách bạch rõ hồ sơ nhân viên với User đăng nhập và phân quyền theo nhóm chức danh hệ thống, liên kết với nhau bằng Mã nhân sự
+Lợi ích đạt được
+* Quản trị tập trung toàn bộ nhân sự
+* Dữ liệu chuẩn để liên thông các phân hệ khác
+1.2. Quản lý ảnh, file hợp đồng lao động và hồ sơ pháp lý
+Thiết kế Back-end
+* Bảng: employee_documents
+* Lưu:
+   * Loại hồ sơ
+   * File path
+   * Ngày hiệu lực
+   * Người upload
+Hiển thị giao diện
+Thực tế đã thiết kế
+  
+
+Thực hiện yêu cầu
+* Khi click vào nút View từng nhân viên, cho phép Upload ảnh, hợp đồng lao động, phụ lục, giấy tờ cá nhân
+* Gắn hồ sơ với từng nhân sự
+Lợi ích đạt được
+* Lưu trữ hồ sơ đầy đủ
+* Dễ tra cứu, đảm bảo tính pháp lý và minh bạch
+1.3. Quản lý hồ sơ tuyển dụng
+Thiết kế Back-end
+* Bảng:
+   * recruitment_plan
+   * candidates
+   * candidate_status_log
+Hiển thị giao diện
+Bảng 1: Định biên nhân sự
+(Có nút tạo mới Nhu cầu tuyển dụng)
+STT
+	Bộ phận
+	Vị trí
+	Nhân sự hiện có
+	Định biên
+	Cần tuyển
+	Ghi chú
+	1
+	Kinh doanh
+	Sale 2
+	18
+	25
+	7
+	Mở rộng thị trường
+	2
+	Marketing
+	MKT 4
+	5
+	6
+	1
+	Bổ sung nhân sự Ads cứng
+	Quy trình: Trưởng nhóm đề xuất lên định biên và số hiện có - hr trình Giám đốc - duyệt thì đăng tuyển
+Bảng 2: Quản lý CV
+(Có nút tạo mới CV) chọn theo vị trí tuyển dụng
+STT
+	Họ và tên
+	Vị trí ứng tuyển
+	Bộ phận
+	Nguồn CV
+	Trạng thái hiện tại
+	Ngày tiếp nhận
+	Thao tác
+	1
+	Nguyễn Văn C
+	Sale 2
+	Kinh doanh
+	Facebook
+	CV tiếp nhận
+	5/3/2025
+	👁️ ✏️ 🗑️
+	2
+	Trần Thị D
+	MKT 4
+	Marketing
+	Giới thiệu
+	CV phỏng vấn
+	10/3/2025
+	👁️ ✏️ 🗑️
+	Bổ sung: Cột sđt và mail ứng viên 
+Thực hiện yêu cầu
+* Bảng định biên:
+   * Nhân sự hiện có
+   * Định biên
+   * Cần tuyển (Công thức: Cần tuyển = Định biên – Nhân sự hiện có)
+* Trạng thái CV ứng viên:
+   * CV tiếp nhận
+   * CV đã liên hệ
+   * CV phỏng vấn
+   * CV trúng tuyển → chuyển sang Nhân viên thử việc (Trạng thái thử việc)
+   * CV không phù hợp
+* Hiển thị nút “+ Chuyển sang Nhân viên thử việc” khi trạng thái = CV trúng tuyển
+Tự động: Tạo employee, Gán status = probation (Thử việc), Không phải nhập lại dữ liệu
+Lợi ích đạt được
+* Xác định rõ nhu cầu tuyển dụng
+* Kiểm soát pipeline ứng viên
+1.4. Phân loại và quản lý trạng thái nhân sự
+Thiết kế Back-end
+* Trường status trong bảng employees
+* Bảng log: employee_status_history
+Hiển thị giao diện
+Bảng danh sách các nhân sự thay đổi trạng thái trong kỳ báo cáo
+(Có nút tạo chọn Từ ngày – đến ngày)
+STT
+	Mã nhân viên
+	Tên nhân viên
+	Trạng thái mới
+	Ngày hiệu lực
+	Người thực hiện
+	Ghi chú
+	1
+	NV001
+	a
+	Thử việc
+	5/12/2025
+	HR Nguyễn A
+	Nhận việc
+	2
+	NV002
+	b
+	Chính thức
+	12/12/2025
+	HR Trần B
+	Đạt thử việc
+	Thực hiện yêu cầu 
+* Quản lý trạng thái:
+   * Thử việc
+   * Chính thức
+   * Tạm nghỉ
+   * Nghỉ việc
+* Lưu lịch sử thay đổi trạng thái
+Lợi ích đạt được
+* Hỗ trợ báo cáo biến động nhân sự, đặc biệt là HR thống kê nhanh được trong kỳ báo cáo có bao nhiêu NV Thử việc, NV Ký hợp đồng chính thức, NV Nghỉ
+* Hỗ trợ báo cáo và tính lương chính xác
+2. Quản trị Bậc lương & Thăng tiến
+2.1. Quản trị bậc lương theo vị trí
+Mục tiêu nghiệp vụ
+* Chuẩn hóa lương P1 theo vị trí
+* Giảm phụ thuộc cảm tính
+Thiết kế Back-end
+* Module: payroll
+* Bảng:
+   * salary_grades
+* Trường chính:
+   * position_id
+   * grade_level
+   * base_salary_min
+   * base_salary_max
+Hiển thị giao diện        
+Bảng 1: Quản lý danh mục vị trí & bậc lương
+(Có nút tạo mới Bậc lương)
+STT
+	Vị trí
+	Ca làm việc
+	Doanh thu từ (triệu/tháng)
+	Doanh thu đến (triệu/tháng)
+	Bậc lương
+	Lương P1 (VNĐ)
+	Trạng thái
+	Thao tác
+	1
+	Sale 1
+	Ca ngày
+	0
+	150
+	Bậc 1
+	9.000.000
+	Đang áp dụng
+	✏️ 🗑️
+	2
+	Sale 1
+	Ca đêm
+	0
+	200
+	Bậc 1
+	9.000.000
+	Đang áp dụng
+	✏️ 🗑️
+	3
+	Sale 2
+	Ca ngày
+	151
+	220
+	Bậc 2
+	11.000.000
+	Đang áp dụng
+	✏️ 🗑️
+	4
+	Sale 2
+	Ca đêm
+	251
+	270
+	Bậc 2
+	11.000.000
+	Đang áp dụng
+	✏️ 🗑️
+	5
+	Sale cứng 1
+	Ca ngày
+	261
+	350
+	Bậc 4
+	14.000.000
+	Đang áp dụng
+	✏️ 🗑️
+	6
+	Trưởng nhóm Sale 2
+	Ca đêm
+	3.401
+	Không giới hạn
+	Bậc 7
+	22.000.000
+	Đang áp dụng
+	✏️ 🗑️
+	Bảng 2: Quản lý bậc lương nhân viên
+(Có nút tạo mới Nhân viên gắn bậc lương)
+STT
+	Mã NV
+	Họ và tên
+	Bộ phận
+	Vị trí
+	Ca làm việc
+	Bậc lương P1
+	Lương P1 (VNĐ)
+	Ngày hiệu lực
+	Thao tác
+	1
+	NV001
+	Nguyễn Văn A
+	Sale
+	Sale 1
+	Ca ngày
+	Bậc 1
+	9.000.000
+	1/1/2025
+	✏️ 🗑️
+	2
+	NV002
+	Trần Thị B
+	Sale
+	Sale 2
+	Ca đêm
+	Bậc 2
+	11.000.000
+	1/2/2025
+	✏️ 🗑️
+	3
+	NV003
+	Lê Văn C
+	Sale
+	Sale 4
+	Ca ngày
+	Bậc 4
+	14.000.000
+	1/3/2025
+	✏️ 🗑️
+	4
+	NV010
+	Phạm Văn D
+	Sale
+	Trưởng nhóm Sale 2
+	Ca đêm
+	Bậc 7
+	22.000.000
+	1/1/2025
+	✏️ 🗑️
+	Thực hiện yêu cầu
+* HR khai báo bậc lương theo vị trí
+Lợi ích đạt được
+* Chuẩn hóa chính sách lương P1
+2.2. Quản lý lịch sử thăng tiến & điều chỉnh bậc lương
+Thiết kế Back-end
+* Bảng: employee_salary_history
+* Trường:
+   * employee_id
+   * salary_grade_id
+   * effective_date
+   * reason
+   * approved_by
+Hiển thị giao diện
+Bảng 1: Lịch sử thay đổi bậc lương các nhân sự
+STT
+	Mã NV
+	Họ và tên
+	Bộ phận
+	Vị trí
+	Ca làm việc
+	Bậc lương
+	Lương P1 (VNĐ)
+	Ngày thay đổi
+	Hình thức
+	Lý do điều chỉnh
+	Thao tác
+	1
+	NV001
+	Nguyễn Văn A
+	Sale
+	Nhân viên Sale 1
+	Ca ngày
+	Bậc 1
+	9.000.000
+	1/1/2025
+	Nhận việc
+	Nhân sự mới
+	👁️
+	2
+	NV001
+	Nguyễn Văn A
+	Sale
+	Nhân viên Sale 2
+	Ca ngày
+	Bậc 2
+	11.000.000
+	1/4/2025
+	Thăng chức
+	Đạt KPI quý I
+	👁️
+	3
+	NV002
+	Trần Thị B
+	Sale
+	Sale cứng 1
+	Ca đêm
+	Bậc 4
+	14.000.000
+	1/6/2025
+	Điều chỉnh lương
+	Điều chỉnh chính sách P1
+	👁️
+	Khi click vào nút View thì hiện bảng 2 (Lịch sử thăng tiến của nhân sự được click View)
+Bảng 2: Lịch sử thăng tiến của 1 nhân sự
+Thời gian
+	Nội dung
+	1/1/2025
+	Nhận việc – Bậc 1 – 9.000.000
+	1/4/2025
+	Thăng chức – Bậc 2 – 11.000.000
+	1/6/2025
+	Điều chỉnh lương – Bậc 4 – 14.000.000
+	Thực hiện yêu cầu
+* Lưu lịch sử thăng chức, điều chỉnh lương
+* Ghi nhận người phê duyệt
+Lợi ích đạt được
+* Minh bạch lộ trình phát triển
+* Dễ truy vết khi tính lương
+3. Quản trị Năng lực Nhân sự
+3.1. Khung năng lực theo vị trí
+Thiết kế Back-end
+* Module: competency
+* Bảng:
+   * competency_framework
+   * competency_items
+Hiển thị giao diện
+Bảng 1: Khai báo khung năng lực theo vị trí
+(Có nút tạo mới Năng lực)
+Trường
+	Kiểu
+	Bộ phận
+	Dropdown
+	Vị trí
+	Dropdown
+	Nhóm năng lực
+	Dropdown
+	Tên năng lực
+	Text
+	Level yêu cầu
+	Dropdown (1–5)
+	Trạng thái
+	Áp dụng / Ngừng
+	Ghi chú
+	Textarea
+	Bảng 2: Danh mục khung năng lực theo bộ phận
+(Có nút dropdown chọn Bộ phận)
+STT
+	Nhóm năng lực
+	Tên năng lực
+	MKT 1
+	MKT 2
+	MKT 3
+	MKT 4
+	MKT 5
+	Trưởng team 1
+	Trưởng team 2
+	
+
+	
+
+	Mã vị trí
+	B1
+	B2
+	B3
+	B4
+	B5
+	B6
+	B7
+	1
+	Lãnh đạo
+	Lập kế hoạch & giám sát KPI
+	–
+	1
+	2
+	2
+	3
+	4
+	5
+	2
+	Lãnh đạo
+	Dẫn dắt & tạo động lực đội nhóm
+	–
+	–
+	–
+	2
+	3
+	4
+	5
+	3
+	Lãnh đạo
+	Đào tạo & kèm cặp nhân viên
+	–
+	–
+	–
+	2
+	3
+	4
+	5
+	4
+	Chuyên môn
+	Xây dựng & triển khai kế hoạch Marketing
+	2
+	3
+	3
+	4
+	4
+	5
+	5
+	5
+	Chuyên môn
+	Báo cáo & quản lý chiến dịch – ngân sách
+	1
+	2
+	3
+	3
+	4
+	4
+	5
+	6
+	Chuyên môn
+	Quản lý số lượng & chất lượng data
+	1
+	2
+	3
+	3
+	4
+	4
+	5
+	7
+	Cá nhân
+	Đề xuất giải pháp mới
+	1
+	2
+	3
+	3
+	4
+	4
+	5
+	8
+	Cá nhân
+	Chủ động phát hiện & xử lý vấn đề
+	1
+	2
+	3
+	3
+	4
+	4
+	5
+	9
+	Cá nhân
+	Mức độ chuyên cần
+	2
+	3
+	3
+	4
+	4
+	5
+	5
+	Thực hiện yêu cầu
+* HR khai báo bộ tiêu chí năng lực:
+   * Chuyên môn
+   * Lãnh đạo
+   * Cá nhân
+* Định nghĩa level cho từng năng lực
+Lợi ích đạt được
+* Chuẩn hóa đánh giá năng lực
+* Nền dữ liệu cho P2 trong 3P
+3.2. Đánh giá năng lực nhân sự định kỳ
+Thiết kế Back-end
+* Bảng:
+   * employee_competency_assessment
+Giao diện hiển thị
+Bảng 1: HR nhập kết quả đánh giá năng lực cho 1 nhân sự
+(Có nút dropdown chọn Bộ phận, Nhân sự, Kỳ đánh giá)
+STT
+	Nhóm năng lực
+	Tên năng lực
+	Level yêu cầu
+	Level đạt được
+	Điểm chênh lệch
+	Nhận xét
+	1
+	Lãnh đạo
+	Lập kế hoạch & giám sát KPI
+	3
+	2
+	-1
+	Cần đào tạo thêm
+	2
+	Lãnh đạo
+	Dẫn dắt & tạo động lực đội nhóm
+	3
+	3
+	0
+	Đạt yêu cầu
+	3
+	Chuyên môn
+	Xây dựng & triển khai kế hoạch Marketing
+	4
+	4
+	0
+	Thực hiện tốt
+	4
+	Chuyên môn
+	Báo cáo & quản lý chiến dịch – ngân sách
+	4
+	3
+	-1
+	Cần kiểm soát ngân sách tốt hơn
+	5
+	Cá nhân
+	Chủ động phát hiện & xử lý vấn đề
+	4
+	4
+	0
+	Chủ động, trách nhiệm
+	6
+	Cá nhân
+	Mức độ chuyên cần
+	4
+	5
+	1
+	Rất tốt
+	* “Level yêu cầu” lấy từ bảng Danh mục khung năng lực theo mã vị trí của Nhân sự đó
+* “Level đạt được” do HR nhập từ kết quả buổi đánh giá
+* Điểm chênh lệch = Level đạt được - Level yêu cầu
+Bảng 2: GĐ/HR/Trưởng bộ phận xem kết quả năng lực
+(Có nút dropdown chọn Bộ phận, Kỳ đánh giá)
+STT
+	Kỳ đánh giá
+	Mã NV
+	Họ và tên
+	Bộ phận
+	Vị trí
+	Điểm YC
+	Điểm KQ
+	Kết quả
+	Ngày đánh giá
+	Thao tác
+	1
+	Q1/2025
+	NV001
+	Nguyễn Văn A
+	MKT
+	MKT 3
+	3.5
+	3.7
+	Đạt
+	30/12/2025
+	👁️
+	2
+	Q1/2025
+	NV002
+	Trần Thị B
+	MKT
+	MKT 3
+	3.5
+	3.2
+	Cần cải thiện
+	30/12/2025
+	👁️
+	* “Điểm YC” là trung bình điểm “Level yêu cầu” của mã vị trí
+* “Điểm KQ” là trung bình điểm “Level đạt được”
+* Nếu “Điểm KQ” > “Điểm YC” thì “Đạt”, nếu không thì “Cần cài thiện”
+* Bấm vào nút View thì hiện lên bảng chi tiết kết quả HR đã nhập ở bảng 1
+Thực hiện yêu cầu
+* HR nhập theo kỳ (sau khi Nhân sự trình bày tự đánh giá, Trưởng bộ phận và Phụ trách đánh giá)
+* Lưu điểm và nhận xét
+Lợi ích đạt được
+* Đánh giá khách quan
+* Có dữ liệu đào tạo và phát triển
+3.3. Quản lý đào tạo nội bộ
+Thiết kế Back-end
+* Bảng:
+   * training_programs
+   * training_participants
+   * training_results
+Hiển thị giao diện
+Bảng 1: Danh sách chương trình đào tạo
+(Có nút tạo mới Chương trình đào tạo)
+STT
+	Mã chương trình
+	Tên chương trình đào tạo
+	Hình thức đào tạo
+	Đơn vị đào tạo
+	Thời gian bắt đầu
+	Thời gian kết thúc
+	Mục tiêu đào tạo
+	Trạng thái
+	Thao tác
+	1
+	DT-001
+	Đào tạo kỹ năng chốt Sale
+	Online
+	Nội bộ
+	1/3/2025
+	5/3/2025
+	Nâng cao tỷ lệ chốt đơn
+	Đang diễn ra
+	✏️ 🗑️ 👥
+	2
+	DT-002
+	Quản lý đội nhóm hiệu quả
+	Offline
+	Bên ngoài
+	15/03/2025
+	16/03/2025
+	Phát triển năng lực lãnh đạo
+	Đã kết thúc
+	👁️
+	* Hình thức đào tạo: Dropdown (Online / Offline / Bên ngoài)
+* Trạng thái: Sắp diễn ra / Đang diễn ra / Đã kết thúc / Hủy
+* Thao tác:
+   * ✏️Sửa chương trình
+   * 🗑️Xóa
+   * 👥 Gán học viên
+   * 👁️Xem chi tiết & kết quả
+Bảng 2: Danh sách học viên tham gia
+(Có nút dropdown cho chọn Chương trình đào tạo)
+STT
+	Mã NV
+	Họ và tên
+	Bộ phận
+	Vị trí
+	Chương trình đào tạo
+	Tình trạng tham gia
+	Tỷ lệ tham dự (%)
+	Ghi chú
+	Thao tác
+	1
+	NV023
+	Nguyễn Văn A
+	Sale
+	NV Sale 2
+	Kỹ năng chốt Sale
+	Đã tham gia
+	100%
+	Đúng giờ
+	✏️
+	2
+	NV045
+	Trần Thị B
+	MKT
+	MKT 3
+	Quản lý ngân sách MKT
+	Vắng
+	0%
+	Nghỉ phép
+	✏️
+	Bảng 3: Kết quả đánh giá sau đào tạo
+(Có nút dropdown cho chọn Chương trình đào tạo)
+STT
+	Mã NV
+	Họ và tên
+	Chương trình đào tạo
+	Điểm Thu hoạch
+	Xếp loại
+	Đánh giá sau đào tạo
+	Áp dụng vào công việc
+	Người đánh giá
+	Thao tác
+	1
+	NV023
+	Nguyễn Văn A
+	Kỹ năng chốt Sale
+	85
+	Khá
+	Tiếp thu tốt, áp dụng nhanh
+	Có
+	Giảng viên
+	✏️
+	2
+	NV045
+	Trần Thị B
+	Kỹ năng chốt Sale
+	92
+	Giỏi
+	Phân tích tốt, đề xuất hiệu quả
+	Có
+	Giảng viên
+	✏️
+	Thực hiện yêu cầu
+* Tạo chương trình đào tạo:
+   * Online (có hình thức xem video tự đào tạo, xem hết video mới cho làm bài thu hoạch)
+   * Offline
+   * Bên ngoài
+* Gán học viên, theo dõi tham gia, điểm thi, đánh giá sau đào tạo
+Lợi ích đạt được
+* Kiểm soát chất lượng đào tạo
+* Gắn đào tạo với nâng cao năng lực
+4. Giao KPI & Đánh giá KPI
+4.1. Giao KPI cá nhân và bộ phận
+Thiết kế Back-end
+* Module: kpi
+* Bảng:
+   * kpi_templates
+   * employee_kpi
+Hiển thị giao diện
+Bảng 1: Quản lý danh mục KPI
+(Có nút tạo mới KPI)
+STT
+	Mã KPI
+	Tên KPI
+	Đơn vị đo
+	Đối tượng áp dụng
+	Trọng số (%)
+	Tháng áp dụng
+	Trạng thái
+	Thao tác
+	1
+	KPI-M1
+	Doanh thu
+	VNĐ
+	Cá nhân MKT
+	50
+	01/12/2025
+	Đang áp dụng
+	✏️ 🗑️
+	2
+	KPI-M2
+	Tỷ lệ chi phí Ads
+	%
+	Cá nhân MKT
+	30
+	01/12/2025
+	Đang áp dụng
+	✏️ 🗑️
+	3
+	KPI-M3
+	Số lượng Mes cam kết
+	Lead
+	Cá nhân MKT
+	20
+	01/12/2025
+	Đang áp dụng
+	✏️ 🗑️
+	Bảng 2: Nhập KPI cho từng cá nhân
+(Có nút tạo mới Cá nhân nhận KPI)
+STT
+	Họ và tên
+	Ca
+	Vị trí
+	KPI-M1
+	KPI-M2
+	KPI-M3
+	Tổng trọng số
+	Trạng thái
+	Thao tác
+	1
+	Đỗ Mạnh Cường
+	Ngày
+	MKT 6
+	Nhập
+	Nhập
+	Nhập
+	100%
+	Chưa chốt
+	✏️
+	2
+	Nguyễn Thị Hiếu
+	Ngày
+	MKT 4
+	Nhập
+	Nhập
+	Nhập
+	100%
+	Chưa chốt
+	✏️
+	3
+	Đoàn Ngọc Huân
+	Ngày
+	MKT 3
+	Nhập
+	Nhập
+	Nhập
+	100%
+	Chưa chốt
+	✏️
+	4
+	Trần Huy Hùng
+	Ngày
+	MKT 4
+	Nhập
+	Nhập
+	Nhập
+	100%
+	Đã giao
+	👁️
+	Bảng 3: Khai báo tỷ lệ quy đổi cho từng mã KPI
+(Có nút chọn Mã KPI)
+STT
+	Tỷ lệ hoàn thành KPI từ
+	Tỷ lệ hoàn thành KPI đến
+	% Quy đổi KPI
+	1
+	0%
+	50%
+	30%
+	2
+	50%
+	70%
+	60%
+	3
+	70%
+	80%
+	75%
+	4
+	80%
+	90%
+	90%
+	5
+	90%
+	95%
+	100%
+	6
+	95%
+	100%
+	110%
+	7
+	Nhập
+	Nhập
+	Nhập
+	8
+	Nhập
+	Nhập
+	Nhập
+	9
+	Nhập
+	Nhập
+	Nhập
+	10
+	Nhập
+	Nhập
+	Nhập
+	Thực hiện yêu cầu
+* HR khai báo KPI theo tháng
+* Gán cho cá nhân/bộ phận
+* Thiết lập trọng số
+* Thiết lập tỷ lệ quy đổi
+Lợi ích đạt được
+* Mục tiêu rõ ràng
+* Đo lường hiệu suất minh bạch
+4.2. Theo dõi & đánh giá KPI
+Thiết kế Back-end
+* Bảng: kpi_results
+* Tự động lấy dữ liệu từ:
+   * Sales
+   * Marketing
+   * Vận đơn
+Hiển thị giao diện
+Bảng 1: Kết quả hoàn thành và quy đổi KPI
+(Có nút dropdown chọn Bộ phận, Tháng)
+STT
+	Họ và tên
+	Bộ phận
+	Vị trí
+	Ca
+	Tháng
+	KPI-M1 (Thực tế)
+	KPI-M2 (Thực tế)
+	KPI-M3 (Thực tế)
+	% Quy đổi KPI-M1
+	% Quy đổi KPI-M2
+	% Quy đổi KPI-M3
+	KPI tổng (%)
+	Trạng thái
+	Thao tác
+	1
+	Đỗ Mạnh Cường
+	Marketing
+	MKT 6
+	Ngày
+	12
+	520.000.000
+	18%
+	1.250
+	105%
+	110%
+	125%
+	112%
+	Đạt
+	👁️
+	2
+	Nguyễn Thị Hiếu
+	Marketing
+	MKT 4
+	Ngày
+	12
+	430.000.000
+	21%
+	980
+	92%
+	95%
+	98%
+	95%
+	Đạt
+	👁️
+	3
+	Trần Huy Hùng
+	Marketing
+	MKT 4
+	Ngày
+	12
+	380.000.000
+	26%
+	720
+	80%
+	80%
+	85%
+	82%
+	Chưa đạt
+	👁️
+	* Dữ liệu KPI tự động đổ từ hệ thống nguồn
+* GĐ, Trưởng bộ phận, Kế toán, HR chỉ xem – không nhập tay
+Bảng 2: Kết quả hoàn thành và quy đổi KPI Cá nhân
+Khi bấm vào nút View thì sẽ show bảng kết quả chi tiết cá nhân:
+STT
+	Họ và tên
+	KPI
+	Kế hoạch
+	Thực tế
+	Tỷ lệ hoàn thành
+	% Quy đổi KPI
+	Trọng số
+	Nguồn dữ liệu
+	1
+	Đỗ Mạnh Cường
+	Doanh thu
+	500.000.000
+	520.000.000
+	105%
+	110%
+	50%
+	Bảng F3
+	2
+	Đỗ Mạnh Cường
+	Chi phí Ads
+	≤ 20%
+	18%
+	110%
+	110%
+	30%
+	Bảng MKT
+	3
+	Đỗ Mạnh Cường
+	Data cam kết
+	1.000
+	1.250
+	125%
+	120%
+	20%
+	Bảng MKT
+	Bảng 3: Báo cáo tổng hợp theo bộ phận
+(Có nút dropdown chọn Bộ phận, Tháng)
+STT
+	Bộ phận
+	Số nhân sự
+	% Đạt KPI
+	% Vượt KPI
+	% Không đạt
+	Điểm KPI TB
+	Ghi chú
+	1
+	Marketing
+	12
+	67%
+	22%
+	11%
+	104%
+	Hiệu suất tốt
+	2
+	Sale
+	25
+	58%
+	18%
+	24%
+	97%
+	Cần cải thiện
+	Thực hiện yêu cầu
+* Tự động tổng hợp kết quả KPI
+* Report theo mẫu HR
+Lợi ích đạt được
+* Giảm thao tác thủ công
+* KPI phản ánh đúng hiệu quả thực tế
+5. Quản trị Giao việc
+5.1. Quản trị giao việc nội bộ
+Thiết kế Back-end
+* Module: task
+* Bảng:
+   * tasks
+   * task_logs
+Hiển thị giao diện
+(Có nút tạo mới Task)
+STT
+	Mã công việc
+	Tên công việc
+	Bộ phận
+	Người giao
+	Người nhận
+	Mức ưu tiên
+	Ngày bắt đầu
+	Deadline
+	Trạng thái
+	Link file kết quả
+	1
+	T-12-001
+	Lập kế hoạch MKT T12
+	MKT
+	Minh
+	Đỗ Mạnh Cường
+	Cao
+	1/12/2025
+	10/12/2025
+	Đang làm
+	Link
+	2
+	T-12-002
+	Giải pháp mới tối ưu chi phí Ads
+	MKT
+	Thùy
+	Nguyễn Thị Hiếu
+	Trung bình
+	5/12/2025
+	20/12/2025
+	Đã xong
+	Link
+	3
+	T-12-003
+	Đào tạo Sale mới
+	Sale
+	Thùy
+	Trần Quốc Khải
+	Cao
+	1/12/2025
+	31/12/2025
+	Quá hạn
+	
+
+	Thực hiện yêu cầu
+* Cấp quản lý tạo – giao – theo dõi công việc
+* Cập nhật trạng thái, deadline
+Lợi ích đạt được
+* Giảm bỏ sót việc
+* Gắn công việc với trách nhiệm hoàn thành, quy định hoàn thành đúng hạn và chế tài quá hạn
+6. Chấm công – Tính lương – BHXH – Thuế TNCN
+6.1. Chấm công nội bộ
+Thiết kế Back-end
+* Module: attendance
+* Bảng: attendance_logs
+Hiển thị giao diện
+Theo mẫu file excel chấm công của công ty
+Thực hiện yêu cầu
+* Import chấm công từ Excel, lập trình chọn lần checkin đầu tiên và checkout cuối cùng trong ca để chốt dữ liệu chấm công.
+* Cho phép chỉnh sửa thủ công có log
+Lợi ích đạt được
+* Kiểm soát giờ làm việc
+* Cơ sở tính lương
+6.2. Tính lương tổng hợp
+Thiết kế Back-end
+* Module: payroll
+* Bảng:
+   * payroll_periods
+   * payroll_details
+Hiển thị giao diện
+Bảng 1: Bảng lương tổng hợp
+STT
+	Mã NV
+	Họ tên
+	Bộ phận
+	Vị trí
+	Công thực tế
+	Lương P1 (VNĐ)
+	Kết quả P3
+	Lương 3P (VNĐ)
+	Lương ngày công
+	Thưởng nóng (VNĐ)
+	Tổng thu nhập
+	Khấu trừ
+	Thực lĩnh
+	Trạng thái
+	Thao tác
+	1
+	NV001
+	Đỗ Mạnh Cường
+	MKT
+	MKT 3
+	26
+	12.000.000
+	110%
+	13.200.000
+	=lương 3P/công chuẩn x công thực tế
+	2.000.000
+	
+
+	1.500.000
+	#########
+	Đã chốt
+	👁️
+	2
+	NV002
+	Nguyễn Thị Hiếu
+	MKT
+	MKT 4
+	25
+	14.000.000
+	120%
+	16.800.000
+	
+
+	1.000.000
+	
+
+	1.800.000
+	#########
+	Đã chốt
+	👁️
+	3
+	NV015
+	Trần Quốc Khải
+	Sale
+	Sale 3
+	24
+	14.000.000
+	130%
+	18.200.000
+	
+
+	3.000.000
+	
+
+	2.000.000
+	#########
+	Đang tính
+	✏️
+	* Cho phép Kế toán nhập tổng các khoản Thưởng nóng, Khấu trừ (Tạm ứng, Giảm trừ BHXH, TNCN…)
+* GĐ, Trưởng bộ phận, HR chỉ xem – không nhập tay các phần khác
+Thực hiện yêu cầu
+* Tự động tổng hợp:
+   * Công
+   * Lương 3P theo công thức: Lương 3P = Lương bậc P1 * P3
+   * Thưởng nóng
+Lợi ích đạt được
+* Tính lương nhanh
+* Chính xác, minh bạch
+6.3. Quản lý BHXH và Thuế TNCN
+Thiết kế Back-end
+* Module: tax
+* Bảng:
+   * insurance_info
+   * tax_info
+   * dependents
+Hiển thị giao diện
+Bảng 1: Thông tin BHXH
+(Có nút tạo mới Cá nhân BHXH)
+STT
+	Mã NV
+	Họ tên
+	Bộ phận
+	Số sổ BHXH
+	Ngày tham gia
+	Mức lương đóng BHXH
+	Tỷ lệ NLĐ (%)
+	Tỷ lệ DN (%)
+	Trạng thái
+	Thao tác
+	1
+	NV001
+	Đỗ Mạnh Cường
+	MKT
+	123456789
+	1/6/2024
+	10.000.000
+	10.5
+	21.5
+	Đang tham gia
+	👁️ ✏️
+	2
+	NV002
+	Nguyễn Thị Hiếu
+	MKT
+	123456790
+	1/1/2025
+	12.000.000
+	10.5
+	21.5
+	Đang tham gia
+	👁️ ✏️
+	3
+	NV015
+	Trần Quốc Khải
+	Sale
+	123456795
+	1/9/2023
+	14.000.000
+	10.5
+	21.5
+	Dừng đóng
+	👁️
+	Bảng 2: Thông tin Thuế TNCN
+(Có nút tạo mới Cá nhân BHXH)
+STT
+	Mã NV
+	Họ tên
+	Mã số thuế TNCN
+	Thu nhập tính thuế
+	Giảm trừ bản thân
+	Tổng giảm trừ người phụ thuộc
+	Thu nhập chịu thuế
+	Biểu thuế
+	Thuế TNCN phải nộp
+	Kỳ áp dụng
+	Thao tác
+	1
+	NV001
+	Đỗ Mạnh Cường
+	…
+	15.200.000
+	15.500.000
+	6.200.000
+	=thu nhập tính thuế - (giảm trừ bản thân + giảm trừ gia cảnh + BHXH)
+	Toàn phần
+	=+IF(AND(AS12="Lũy tiến",AL12<5000000),AL12*0.05,IF(AND(AS12="Lũy tiến",AL12<10000000),AL12*0.1-250000,IF(AND(AS12="Lũy tiến",AL12<18000000),AL12*0.15-750000,IF(AND(AS12="Lũy tiến",AL12<32000000),AL12*0.2-1650000,IF(AND(AS12="Lũy tiến",AL12<52000000),AL12*0.25-3250000,IF(AND(AS12="Lũy tiến",AL12<80000000),AL12*0.2-5858000,IF(AND(AS12="Lũy tiến",AL12>80000000),AL12*35%-9850000,AL12*10%)))))))
+	12
+	👁️ ✏️
+	2
+	NV002
+	Nguyễn Thị Hiếu
+	…
+	17.800.000
+	11.000.000
+	0
+	6.800.000
+	Lưỹ tiến
+	680.000
+	12
+	👁️ ✏️
+	(Lưu ý: AS12  chính là biểu thuế; AL là thu nhập  tính thuế)
+Bảng 3: Quản lý người phụ thuộc của nhân sự
+(Có nút tạo mới Người phụ thuộc của nhân sự)
+STT
+	Mã NV
+	Họ tên NV
+	Họ tên người phụ thuộc
+	Quan hệ
+	Ngày sinh
+	CCCD/CMND
+	Thời gian giảm trừ từ
+	Thời gian giảm trừ đến
+	Trạng thái
+	Thao tác
+	1
+	NV001
+	Đỗ Mạnh Cường
+	Đỗ Minh Anh
+	Con
+	15/03/2018
+	—
+	1/1/2025
+	—
+	Đang áp dụng
+	👁️ ✏️ 🗑️
+	2
+	NV001
+	Đỗ Mạnh Cường
+	Nguyễn Thị Lan
+	Vợ
+	10/10/1995
+	123456789
+	1/1/2025
+	—
+	Đang áp dụng
+	👁️ ✏️ 🗑️
+	Thực hiện yêu cầu
+* Lưu thông tin BHXH, người phụ thuộc
+* Tính khấu trừ theo quy định
+Lợi ích đạt được
+* Tuân thủ pháp luật
+* Giảm rủi ro sai sót
+6.4. Phiếu lương & Báo cáo nhân sự
+Thiết kế Back-end
+* Read-model cho báo cáo
+Hiển thị giao diện
+1. Thông tin chung
+	Trường thông tin
+	Giá trị
+	Họ tên
+	Đỗ Mạnh Cường
+	Mã nhân sự
+	NV001
+	Bộ phận
+	Marketing
+	Vị trí
+	MKT 3
+	Kỳ lương
+	Tháng 12/2025
+	2. Thu nhập
+	
+
+	Khoản mục
+	Số tiền (VNĐ)
+	Lương bậc P1
+	12.000.000
+	Kết quả P3 (KPI)
+	110%
+	Lương 3P
+	13.200.000
+	Thưởng nóng
+	2.000.000
+	Tổng thu nhập
+	15.200.000
+	3. Khấu trừ
+	
+
+	Khoản khấu trừ
+	Số tiền (VNĐ)
+	BHXH
+	800.000
+	Thuế TNCN
+	700.000
+	Tổng khấu trừ
+	1.500.000
+	4. Thực lĩnh
+	13.700.000
+	Thực hiện yêu cầu
+* Tạo phiếu lương cá nhân
+* Báo cáo:
+   * Tổng quỹ lương
+   * Biến động nhân sự
+Lợi ích đạt được
+* Minh bạch với nhân viên
+* Hỗ trợ quản trị & ra quyết định
+________________
+
+
+C. Recommend của Dev
+1. Recommend phương án thực hiện
+Chúng ta có thể….
+
+
+
+
+2. Các bước triển khai từng phần:
+* Đặc tả, Phân tích thiết kế 
+* Thiết kế và lập trình giao diện hiển thị và các thao tác
+* Triển khai lập trình xây dựng Backend
+* Kết nối hoàn thiện hệ thống
+	Thời gian xây dựng 6 mục trong … ngày
+Thời gian triển khai xong trước cuối tháng …/2025. Đầu tháng …/2026 bắt đầu chạy thực tế để so sánh
+	* Chạy thử, nghiệm thu bàn giao và hướng dẫn NV thao tác
+* Bảo trì sau bàn giao
+	5 ngày
+Realtime
