@@ -1,6 +1,19 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { asIdentityText, getEmployeeEmploymentStatus, mapAppToUser, mapUserToApp } from './helpers.js'
+import { asIdentityText, getEmployeeEmploymentStatus, mapAppToUser, mapUserToApp, runUsersMutationWithSchemaFallback } from './helpers.js'
+
+test('ghi hồ sơ không có trường lương không xóa lương; ánh xạ mốc hiệu lực và tỷ lệ 0%', async () => {
+  assert.equal(Object.hasOwn(mapAppToUser({ ho_va_ten: 'NV' }), 'total_salary'), false)
+  const payload = mapAppToUser({ tong_luong: 0, ngay_hieu_luc_luong: '01/10/2026', ty_le_luong_thu_viec: 0 })
+  assert.equal(payload.total_salary, '0')
+  assert.equal(payload.salary_change_effective_date, '2026-10-01')
+  assert.equal(payload.probation_salary_percent, 0)
+  const result = await runUsersMutationWithSchemaFallback(async () => ({ error: {
+    message: "Could not find the 'salary_change_effective_date' column of 'users' in the schema cache"
+  } }), payload)
+  assert.match(result.error.message, /cập nhật database/)
+  assert.equal(result.removedColumns.length, 0)
+})
 
 test('không suy diễn hồ sơ có employment_status rỗng thành Chính thức', () => {
   const employee = mapUserToApp({

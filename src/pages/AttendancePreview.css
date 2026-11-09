@@ -1410,6 +1410,13 @@
   font-weight: 650;
 }
 
+.payroll-table td small,
+.payroll-mobile-card dd small {
+  display: block;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
 @media (max-width: 760px) {
   .payroll-table {
     display: none;

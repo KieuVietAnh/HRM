@@ -8,11 +8,14 @@ import {
   getEmployeeEmploymentStatus,
   getEmployeeStage,
   getEmployeeWorkState,
+  formatMoney,
+  formatDateDisplay,
   mapAppToUser,
   runUsersMutationWithSchemaFallback,
   WORK_STATE_OPTIONS
 } from '../utils/helpers'
 import { employeeContractKey } from '../utils/employeeContracts'
+import { parseSalaryAmount } from '../utils/payrollSalary'
 import {
   DEFAULT_ATTENDANCE_SHIFT,
   getAttendanceShiftOptions,
@@ -167,6 +170,9 @@ function EmployeeModal({
     ca_lam_viec: DEFAULT_ATTENDANCE_SHIFT.name,
     ngay_vao_lam: '',
     ngay_lam_chinh_thuc: '',
+    tong_luong: '',
+    ngay_hieu_luc_luong: '',
+    ty_le_luong_thu_viec: 100,
     loai_hop_dong: '',
     ngay_het_han: '',
     cccd: '',
@@ -198,6 +204,20 @@ function EmployeeModal({
   const [avatarUrlInput, setAvatarUrlInput] = useState('')
   const [galleryUrlInput, setGalleryUrlInput] = useState('')
   const [shiftOptions, setShiftOptions] = useState(DEFAULT_EMPLOYEE_SHIFT_OPTIONS)
+  const [salaryHistory, setSalaryHistory] = useState([])
+  const [salaryHistoryError, setSalaryHistoryError] = useState('')
+
+  useEffect(() => {
+    let cancelled = false
+    setSalaryHistory([])
+    setSalaryHistoryError('')
+    if (isOpen && employee?.id) {
+      fbGet(`hr/employeeSalaryHistory/${employee.id}`).then(record => {
+        if (!cancelled) setSalaryHistory([...(record?.entries || [])].sort((a, b) => b.effectiveDate.localeCompare(a.effectiveDate)))
+      }).catch(() => { if (!cancelled) setSalaryHistoryError('Không tải được lịch sử lương. Hãy mở lại hồ sơ để đối chiếu.') })
+    }
+    return () => { cancelled = true }
+  }, [isOpen, employee?.id])
 
   useEffect(() => {
     if (!isOpen) return
@@ -256,6 +276,9 @@ function EmployeeModal({
         ca_lam_viec: employee.ca_lam_viec || DEFAULT_ATTENDANCE_SHIFT.name,
         ngay_vao_lam: employee.ngay_vao_lam || '',
         ngay_lam_chinh_thuc: employee.ngay_lam_chinh_thuc || '',
+        tong_luong: employee.tong_luong ?? '',
+        ngay_hieu_luc_luong: '',
+        ty_le_luong_thu_viec: employee.ty_le_luong_thu_viec ?? 100,
         loai_hop_dong: employee.loai_hop_dong || '',
         ngay_het_han: employee.ngay_het_han || '',
         cccd: asIdentityText(employee.cccd, 'cccd'),
@@ -325,6 +348,9 @@ function EmployeeModal({
       ca_lam_viec: DEFAULT_ATTENDANCE_SHIFT.name,
       ngay_vao_lam: '',
       ngay_lam_chinh_thuc: '',
+      tong_luong: '',
+      ngay_hieu_luc_luong: '',
+      ty_le_luong_thu_viec: 100,
       loai_hop_dong: '',
       ngay_het_han: '',
       cccd: '',
@@ -604,6 +630,16 @@ function EmployeeModal({
     }
 
     try {
+      const salaryChanged = String(formData.tong_luong) !== String(employee?.tong_luong ?? '') ||
+        Number(formData.ty_le_luong_thu_viec) !== Number(employee?.ty_le_luong_thu_viec ?? 100)
+      if (salaryChanged || formData.ngay_hieu_luc_luong) {
+        if (parseSalaryAmount(formData.tong_luong) === null) throw new Error('Nhập mức lương VNĐ nguyên hợp lệ (có thể bằng 0).')
+        if (formData.ty_le_luong_thu_viec === '' || !Number.isFinite(Number(formData.ty_le_luong_thu_viec)) ||
+          Number(formData.ty_le_luong_thu_viec) < 0 || Number(formData.ty_le_luong_thu_viec) > 100) {
+          throw new Error('Tỷ lệ lương thử việc phải từ 0 đến 100%.')
+        }
+        if (!formData.ngay_hieu_luc_luong) throw new Error('Chọn ngày hiệu lực cho mức lương mới.')
+      }
       const oldStatus = employee ? getEmployeeEmploymentStatus(employee) : ''
       const employmentFields = composeEmploymentFields({
         workState: formData.work_state,
@@ -612,6 +648,10 @@ function EmployeeModal({
       const newStatus = employmentFields.trang_thai
       const filledDocs = getFilledDocuments()
       const payloadForm = { ...formData, ...employmentFields, files: filledDocs }
+      if (!salaryChanged && !formData.ngay_hieu_luc_luong) {
+        delete payloadForm.tong_luong
+        delete payloadForm.ty_le_luong_thu_viec
+      }
       delete payloadForm.work_state
       const contract = {
         contractType: String(formData.loai_hop_dong || '').trim(),
@@ -1081,6 +1121,32 @@ function EmployeeModal({
                     />
                   </div>
                 </div>
+
+                <fieldset disabled={!editable}>
+                  <legend>Mức lương theo ngày hiệu lực</legend>
+                  <div className="form-row">
+                    <label>Lương chính thức/tháng (VNĐ)
+                      <input aria-label="Lương chính thức mỗi tháng" type="text" inputMode="numeric" name="tong_luong"
+                        value={formData.tong_luong} onChange={handleChange} placeholder="Ví dụ: 13000000" />
+                    </label>
+                    <label>Tỷ lệ lương thử việc (%)
+                      <input aria-label="Tỷ lệ lương thử việc" type="number" min="0" max="100" step="0.01" name="ty_le_luong_thu_viec"
+                        value={formData.ty_le_luong_thu_viec} onChange={handleChange} />
+                    </label>
+                    <label>Ngày hiệu lực mức lương mới
+                      <input aria-label="Ngày hiệu lực mức lương mới" type="date" name="ngay_hieu_luc_luong"
+                        value={formData.ngay_hieu_luc_luong} onChange={handleChange} />
+                    </label>
+                  </div>
+                  <p>Chọn ngày hiệu lực khi thay đổi mức lương hoặc tỷ lệ thử việc. Từ ngày làm chính thức, hưởng 100%. Bảng lương đã chốt giữ nguyên.</p>
+                  {employee?.ngay_hieu_luc_luong && <p>Mốc lương gần nhất đã nhập: {employee.ngay_hieu_luc_luong}</p>}
+                  {salaryHistoryError && <p role="alert">{salaryHistoryError}</p>}
+                  {salaryHistory.length > 0 && <details><summary>Lịch sử mức lương</summary>
+                    <ul>{salaryHistory.map(entry => <li key={entry.effectiveDate}>
+                      {entry.legacy ? 'Mức cũ cần đối chiếu' : `Từ ${formatDateDisplay(entry.effectiveDate)}`}: {formatMoney(Number(entry.amount))} · thử việc {entry.probationPercent}%
+                    </li>)}</ul>
+                  </details>}
+                </fieldset>
 
                 <div className="form-row">
                   <div className="form-group">

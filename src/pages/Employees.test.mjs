@@ -33,6 +33,7 @@ const compiled = await build({
             : args.path.endsWith('/EmployeeDirectory') ? `export default function EmployeeDirectory() {}`
             : args.path.endsWith('firebase') ? `
                 export const fbGet = async () => null;
+                export const fbSet = async () => {};
                 export const fbListCollectionIds = async () => [];`
             : args.path.endsWith('employeeDirectory') ? `
                 import { db } from '../services/supabase';
@@ -156,6 +157,17 @@ test('ordinary CSV still previews and updates an explicitly matching employee co
     assert.equal(app.db.writes.length, 1, app.alerts.join('\n'))
     assert.equal(app.db.writes[0].action, 'update')
     assert.equal(app.db.writes[0].value, 'existing')
+    assert.equal(Object.hasOwn(app.db.writes[0].payload, 'total_salary'), false)
+})
+
+test('salary CSV keeps explicit effective date and probation percent', async () => {
+    const app = harness([{ id: 'existing', employee_id: 'NV1', name: 'Nguyễn Văn A' }])
+    await app.upload(Buffer.from('Họ tên,Mã NV,Tổng lương,Ngày hiệu lực lương,Tỷ lệ lương thử việc\nNguyễn Văn A,NV1,13000000,01/10/2026,80', 'utf8'), 'salary.csv')
+    await app.preview().props.onConfirm()
+    assert.equal(app.db.writes.length, 1, app.alerts.join('\n'))
+    assert.equal(app.db.writes[0].payload.total_salary, '13000000')
+    assert.equal(app.db.writes[0].payload.salary_change_effective_date, '2026-10-01')
+    assert.equal(app.db.writes[0].payload.probation_salary_percent, 80)
 })
 
 test('actual supplied workbook imports exactly 40 August names, not the hidden 61-person sheet', {
