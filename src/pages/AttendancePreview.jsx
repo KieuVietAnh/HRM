@@ -6,10 +6,8 @@ import {
 } from '../utils/attendanceSummary'
 import { rebuildAttendanceMonthSummary } from '../services/attendanceMonthSummary'
 import AttendanceImportModal from '../components/AttendanceImportModal'
-import PayrollTable from '../components/PayrollTable'
+import PayrollSummary from '../components/PayrollSummary'
 import ResetAttendanceModal from '../components/ResetAttendanceModal'
-import { getPenaltiesByMonth } from '../services/attendancePenaltiesDb'
-import { loadEmployeeLeaveSettings } from '../services/employeeLeave'
 import { supabase } from '../services/supabase'
 import { dayOfWeekFromDate, formatTimeHM } from '../components/AttendanceModal'
 import {
@@ -275,12 +273,6 @@ function AttendancePreview() {
   const [isResetModalOpen, setIsResetModalOpen] = useState(false)
   const [sheet, setSheet] = useState('attendance')
   const [weekFilter, setWeekFilter] = useState('')
-  const [payrollBundle, setPayrollBundle] = useState({
-    penalties: [],
-    leave: {},
-    employees: {},
-    kpis: []
-  })
   const canEditWorkdays = true
   const canEditNotes = true
   const savedDetailNotes = normalizeDailyNotes(attendanceNotes[String(detailRow?.employeeId)])
@@ -437,45 +429,6 @@ function AttendancePreview() {
       return rows.find(row => String(row.employeeId) === String(previous.employeeId)) || null
     })
   }, [rows])
-
-  useEffect(() => {
-    if (!hasSnapshot || !month || !companyId) return undefined
-    let cancelled = false
-    if (!canEditWorkdays) return undefined
-    const loadPayroll = async () => {
-      const [penalties, leave, employees, kpis] = await Promise.all([
-        getPenaltiesByMonth(month).catch(() => []),
-        loadEmployeeLeaveSettings(companyId).catch(() => ({})),
-        fbGetEmployeesDirectory().catch(() => ({})),
-        fbGet('hr/kpiResults').catch(() => ({}))
-      ])
-      if (cancelled) return
-      setPayrollBundle({
-        penalties: penalties || [],
-        leave: leave || {},
-        employees: employees || {},
-        kpis: kpis && typeof kpis === 'object' ? Object.values(kpis) : []
-      })
-    }
-    loadPayroll()
-    return () => {
-      cancelled = true
-    }
-  }, [canEditWorkdays, companyId, hasSnapshot, month])
-
-  const payrollEmployees = useMemo(
-    () => new Map(Object.entries(payrollBundle.employees || {})),
-    [payrollBundle.employees]
-  )
-  const payrollKpis = useMemo(() => {
-    const map = new Map()
-    ;(payrollBundle.kpis || []).forEach(result => {
-      if (!result?.employeeId) return
-      if (result.month && result.month !== month) return
-      map.set(String(result.employeeId), result)
-    })
-    return map
-  }, [month, payrollBundle.kpis])
 
   const loadConfirmations = useCallback(async (targetMonth) => {
     if (!targetMonth) {
@@ -1373,13 +1326,12 @@ function AttendancePreview() {
           {canEditWorkdays && <button type="button" className={sheet === 'payroll' ? 'is-active' : ''} onClick={() => setSheet('payroll')}>Bảng lương</button>}
         </div>
         {sheet === 'payroll' ? (
-          <PayrollTable
+          <PayrollSummary
+            key={`${companyId}:${month}`}
             rows={rows}
-            employeesById={payrollEmployees}
-            penalties={payrollBundle.penalties}
-            leaveSettings={payrollBundle.leave}
-            kpiByEmployee={payrollKpis}
             month={month}
+            companyId={companyId}
+            search={excelSearch}
           />
         ) : (
         <>
